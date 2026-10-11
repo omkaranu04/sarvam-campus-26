@@ -174,11 +174,18 @@ Return JSON: {"theme":string,"items":[
 // ---------- HTTP plumbing ----------
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
+const HITS = {};
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   if (req.method === 'POST' && handlers[url.pathname]) {
+    // Per-IP rate limit (cost guard for the Sarvam key): 120 AI calls/minute.
+    const ip = req.socket.remoteAddress, now = Date.now();
+    const b = (HITS[ip] = (HITS[ip] || []).filter(t => now - t < 60000));
+    if (b.length >= 120) return res.writeHead(429, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: 'Too many requests, slow down a little' }));
+    b.push(now);
+    const limit = url.pathname === '/api/reflect' ? 8e6 : 1e5;
     let raw = '';
-    req.on('data', c => { raw += c; if (raw.length > 15e6) req.destroy(); });
+    req.on('data', c => { raw += c; if (raw.length > limit) req.destroy(); });
     req.on('end', async () => {
       const t0 = Date.now();
       try {
@@ -187,7 +194,7 @@ http.createServer(async (req, res) => {
         console.log(`${url.pathname} ok ${Date.now() - t0}ms`);
       } catch (e) {
         console.error(`${url.pathname} failed:`, e.message);
-        res.writeHead(502, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: e.message }));
+        res.writeHead(502, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: 'AI service unavailable right now' }));
       }
     });
     return;
