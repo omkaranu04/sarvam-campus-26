@@ -264,7 +264,11 @@ const FALLBACK = {days:[{day:1,theme:'Warm-up',items:[
   deep_thoughts:['If you could keep only one memory forever, which would you choose — and why?','Is it ever okay to break a rule? When?']};
 
 const $ = id => document.getElementById(id);
-const S = (() => { try { return JSON.parse(localStorage.getItem('ms') || '{}'); } catch { return {}; } })();
+// Saved progress may be missing or corrupted (any JSON, or not JSON at all): accept only a plain object
+// and repair array fields, so bad storage can never stop the app from loading.
+const S = (() => { try { const v = JSON.parse(localStorage.getItem('ms') || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch { return {}; } })();
+if (!Array.isArray(S.log)) S.log = [];
+if (!Array.isArray(S.badges)) S.badges = [];
 S.log ??= []; S.badges ??= [];
 const save = () => { try { localStorage.setItem('ms', JSON.stringify(S)); } catch {} };
 let BANK = FALLBACK, sprint = null, idx = 0, cur = null, tr = null, attempts = 0, hintsUsed = 0, results = [], timerId = null, deepIdx = 0;

@@ -4,7 +4,7 @@
   "functions": {
     "api/[name].js": {
       "maxDuration": 300,
-      "includeFiles": "public/puzzles.json"
+      "includeFiles": "public/**/*.json"
     }
   },
   "rewrites": [
