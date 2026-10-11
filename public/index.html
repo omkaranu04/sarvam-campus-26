@@ -250,7 +250,7 @@ async function localize() {
 }
 function render() {
   const it = cur;
-  $('typePill').textContent = TYPES[it.type] || it.type;
+  $('typePill').textContent = (TYPES[it.type] || it.type) + (sprint.day === 'AI' ? (it.verified === 'ai' ? ' · ✓ written by Sarvam AI, checked by a 2nd Sarvam pass' : ' · from our hand-checked bank') : '');
   $('title').textContent = tr.title;
   $('passage').classList.toggle('hidden', !tr.passage); $('passage').textContent = tr.passage || '';
   $('question').textContent = tr.question;
