@@ -38,3 +38,13 @@ See [PITCH.md](PITCH.md) for the pitch and the 2-minute demo script.
 | Socratic hint in Hindi | Parent digest + voice note |
 |---|---|
 | ![hint](docs/screenshots/hint.png) | ![parent](docs/screenshots/parent.png) |
+
+## Deploy on Vercel
+
+The repo works on Vercel as-is: `public/` is served as static files, and `api/[name].js` turns the same handlers into serverless functions.
+
+1. Import the repo at vercel.com/new. Framework preset: **Other**. Leave the build command empty.
+2. Under **Settings → Environment Variables**, add `SARVAM_API_KEY`, then redeploy.
+3. Or use the CLI: `npm i -g vercel && vercel && vercel env add SARVAM_API_KEY && vercel --prod`
+
+Notes: `vercel.json` gives functions up to 300s, since AI sprint generation plus the answer check takes about 45-90s. On Vercel there's no startup pre-generation, so **Generate** takes that long every time, and the curated Days 1-5 are instant. Request bodies are capped at 4.5MB, which is fine for short voice reflections.

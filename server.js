@@ -222,6 +222,10 @@ const handlers = {
 // ---------- HTTP plumbing ----------
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
+module.exports = { handlers };
+
+// Local / any-VM mode. On Vercel, api/[name].js imports `handlers` instead.
+if (require.main === module) {
 const HITS = {};
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
@@ -257,3 +261,4 @@ http.createServer(async (req, res) => {
   console.log(`🧠 Mind Sprint running → http://localhost:${PORT}`);
   if (KEY && !process.env.NO_PREWARM) PREWARM.forEach(t => refill(t).catch?.(() => {}));
 });
+}

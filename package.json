@@ -1,0 +1,7 @@
+{
+  "name": "mind-sprint",
+  "private": true,
+  "description": "Duolingo for Logic, made for Bharat — powered by Sarvam AI",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
