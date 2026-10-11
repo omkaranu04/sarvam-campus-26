@@ -183,7 +183,7 @@ const handlers = {
       const v = await chat('You judge hints for a kids puzzle game. Reply with ONLY YES or NO.', `Options: ${options.join(' | ')}\nSecret answer: ${answer}\nHint: ${hint}\nReading ONLY this hint (not the puzzle), does it name, describe, or mention what "${answer}" does or is used for, so that it points to "${answer}" more than to the other options? If in doubt, YES.`, 300).catch(() => 'NO');
       gives = /yes/i.test(v);
     }
-    if (gives) hint = 'Read each line of the puzzle again: which option fits EVERY clue, not just one?';
+    if (gives) hint = level > 1 ? 'Test each option against EVERY clue, one by one, and cross out any option that fails even one clue.' : 'Read each clue slowly: which word in the puzzle might have a second, trickier meaning?';
     if (answer && leaks.some(x => x && (/^\d+$/.test(x) ? new RegExp('(^|\\D)' + x + '(\\D|$)').test(hint) : hint.toLowerCase().includes(x)))) {
       hint = 'Try breaking the puzzle into smaller steps — what do you know for sure first?';
     }
