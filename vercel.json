@@ -1,6 +1,16 @@
 {
+  "framework": null,
   "outputDirectory": "public",
   "functions": {
-    "api/[name].js": { "maxDuration": 300, "includeFiles": "public/puzzles.json" }
-  }
+    "api/[name].js": {
+      "maxDuration": 300,
+      "includeFiles": "public/puzzles.json"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
 }

@@ -222,16 +222,14 @@ const handlers = {
 // ---------- HTTP plumbing ----------
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
-module.exports = { handlers };
-
-// Local / any-VM mode. On Vercel, api/[name].js imports `handlers` instead.
-if (require.main === module) {
+// One request handler for every runtime: `node server.js` (below), Vercel's
+// zero-config server mode (imports this file as the app), and api/[name].js.
 const HITS = {};
-http.createServer(async (req, res) => {
+async function app(req, res) {
   const url = new URL(req.url, 'http://x');
   if (req.method === 'POST' && handlers[url.pathname]) {
     // Per-IP rate limit (cost guard for the Sarvam key): 120 AI calls/minute.
-    const ip = req.socket.remoteAddress, now = Date.now();
+    const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0] || req.socket.remoteAddress, now = Date.now();
     const b = (HITS[ip] = (HITS[ip] || []).filter(t => now - t < 60000));
     if (b.length >= 120) return res.writeHead(429, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: 'Too many requests, slow down a little' }));
     b.push(now);
@@ -257,8 +255,14 @@ http.createServer(async (req, res) => {
     if (err) return res.writeHead(404).end('Not found');
     res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' }).end(buf);
   });
-}).listen(PORT, () => {
-  console.log(`🧠 Mind Sprint running → http://localhost:${PORT}`);
-  if (KEY && !process.env.NO_PREWARM) PREWARM.forEach(t => refill(t).catch?.(() => {}));
-});
+}
+
+module.exports = app;
+module.exports.handlers = handlers;
+
+if (require.main === module) {
+  http.createServer(app).listen(PORT, () => {
+    console.log(`🧠 Mind Sprint running → http://localhost:${PORT}`);
+    if (KEY && !process.env.NO_PREWARM) PREWARM.forEach(t => refill(t).catch?.(() => {}));
+  });
 }
