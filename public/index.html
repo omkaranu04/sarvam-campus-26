@@ -339,11 +339,11 @@ function renderParent() {
 }
 $('digestBtn').onclick = async () => {
   busy($('digestBtn'), true, 'Writing digest…');
-  const s = weekStats(); if (!s.sprints_completed) Object.assign(s, { sprints_completed: 4, active_days: 4, puzzles_solved: 13, points: 142, highlight: 'Cracked a tricky number-pattern puzzle after two tries' , note: 'demo data' });
+  const s = weekStats(), demo = !s.sprints_completed; if (demo) Object.assign(s, { sprints_completed: 4, active_days: 4, puzzles_solved: 13, points: 142, highlight: 'Cracked a tricky number-pattern puzzle after two tries' , note: 'demo data' });
   try {
     const d = await api('/api/digest', { child: $('kidName').value || '', stats: s, lang: lang() === 'en-IN' ? 'hi-IN' : lang() });
     const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-    $('waBox').innerHTML = `<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
+    $('waBox').innerHTML = `${demo ? '<div class="muted" style="margin-bottom:8px;font-weight:700">Sample digest — demo data, because no sprint has been played on this device yet.</div>' : ''}<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
       <div class="bubble">${escapeHTML(d.text)}<small>${time} ✓✓</small></div>
       ${d.audio ? `<div class="bubble" style="margin-top:8px">🎙️ Voice note (Bulbul)<br><audio controls src="data:audio/wav;base64,${d.audio}" style="width:100%;margin-top:6px"></audio><small>${time} ✓✓</small></div>` : ''}
       <details style="margin-top:8px"><summary class="muted">English original</summary><p class="muted">${escapeHTML(d.en)}</p></details>
