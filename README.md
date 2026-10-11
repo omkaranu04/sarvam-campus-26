@@ -7,6 +7,7 @@ Built for the Sarvam campus hackathon. All of the AI runs on **Sarvam AI**.
 | Feature | Sarvam API |
 |---|---|
 | Fresh AI-written daily sprint on any theme | `sarvam-105b` chat completions |
+| ✅ Answer checker: a second `sarvam-105b` pass solves every generated puzzle without seeing the answer, and disagreements are swapped for curated items | `sarvam-105b` (reasoning) |
 | Puzzles in 11 languages (Hindi, Tamil, Bengali, Telugu, …) | Sarvam Translate (`sarvam-translate:v1`) |
 | 🔊 Read-aloud for younger or slower readers | Bulbul v3 text-to-speech |
 | 💡 Socratic hints that never reveal the answer | `sarvam-105b` (plus a server-side answer-leak guard) |
@@ -21,7 +22,7 @@ node server.js                   # Node 18+, zero npm dependencies
 open http://localhost:3000
 ```
 
-If the API is unreachable, the app falls back to a curated, hand-checked 5-day puzzle bank (`public/puzzles.json`).
+On startup the server pre-generates and checks sprints (cricket, space, monsoon, surprise me), so **Generate** answers instantly on stage. If the API is unreachable, the app falls back to a curated, hand-checked 5-day puzzle bank (`public/puzzles.json`).
 
 ## Design choices taken from our strategy brief
 

@@ -111,7 +111,7 @@ nav button.on{background:var(--brand);color:#fff}
       <div class="passage hidden" id="passage"></div>
       <div class="q" id="question"></div>
       <div class="opts" id="opts"></div>
-      <div class="row hidden" id="numRow"><input id="numIn" inputmode="numeric" placeholder="Your answer" style="width:180px"><button class="btn" id="numBtn">Check</button></div>
+      <div class="row hidden" id="numRow"><input id="numIn" inputmode="decimal" placeholder="Your answer" style="width:180px"><button class="btn" id="numBtn">Check</button></div>
       <div id="fb"></div>
       <div class="row" style="margin-top:14px;justify-content:space-between">
         <button class="btn ghost hidden" id="hintBtn">💡 Give me a hint</button>
@@ -221,9 +221,9 @@ fetch('puzzles.json').then(r => r.ok ? r.json() : null).then(j => { if (j?.days?
 // ---------- sprint ----------
 $('startBtn').onclick = () => startSprint(BANK.days[+$('daySel').value]);
 $('genBtn').onclick = async () => {
-  busy($('genBtn'), true, 'sarvam-105b is writing your puzzles…');
+  busy($('genBtn'), true, 'sarvam-105b is writing &amp; double-checking your puzzles…');
   try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: 10 }); day.day = 'AI'; startSprint(day); }
-  catch (e) { alert('Could not generate right now (' + e.message + '). Using today\'s curated sprint.'); startSprint(BANK.days[0]); }
+  catch (e) { startSprint(BANK.days[Math.floor(Math.random() * BANK.days.length)]); }
   finally { busy($('genBtn'), false); }
 };
 async function startSprint(day) { sprint = day; idx = 0; results = []; $('intro').classList.add('hidden'); $('done').classList.add('hidden'); $('play').classList.remove('hidden'); await load(); }
@@ -240,7 +240,10 @@ async function localize() {
   $('question').innerHTML = '<span class="spin"></span> Translating with Sarvam…';
   try {
     const { texts } = await api('/api/translate', { texts: src, lang: lang() });
-    tr = { title: texts[0], question: texts[1], passage: texts[2], explanation: texts[3], options: it.options ? texts.slice(4) : null };
+    let opts = it.options ? texts.slice(4) : null;
+    // All-or-nothing options: a half-translated set can single out the right answer.
+    if (opts && opts.some((o, i) => o === it.options[i]) && opts.some((o, i) => o !== it.options[i])) opts = it.options;
+    tr = { title: texts[0], question: texts[1], passage: texts[2], explanation: texts[3], options: opts };
   } catch {}
 }
 function render() {
@@ -262,7 +265,12 @@ function render() {
 }
 $('numBtn').onclick = () => check($('numIn').value.trim(), null);
 $('numIn').onkeydown = e => { if (e.key === 'Enter') $('numBtn').click(); };
-function norm(s) { return String(s).replace(/[,\s₹]/g, '').toLowerCase(); }
+// Accept Indic-script digits (०-९, ০-৯, ௦-௯, …), trailing units ("34 runs") and 7.50 == 7.5.
+function norm(s) {
+  let t = String(s).replace(/[\u0966-\u096F\u09E6-\u09EF\u0A66-\u0A6F\u0AE6-\u0AEF\u0B66-\u0B6F\u0BE6-\u0BEF\u0C66-\u0C6F\u0CE6-\u0CEF\u0D66-\u0D6F]/g, d => String((d.charCodeAt(0) - 6) & 0xF)).replace(/[,\s₹]/g, '').toLowerCase();
+  const m = cur?.type === 'fast_math' && t.match(/^-?\d+(\.\d+)?/);
+  return m ? String(parseFloat(m[0])) : t;
+}
 function check(ans, btn) {
   if (!$('nextBtn').classList.contains('hidden')) return;
   const ok = norm(ans) === norm(cur.answer);
@@ -272,21 +280,21 @@ function check(ans, btn) {
     btn?.classList.add('right');
     const pts = Math.max(4, (cur.points || 10) - (attempts - 1) * 2 - hintsUsed * 2);
     results.push({ type: cur.type, ok: true, attempts, hints: hintsUsed, pts });
-    $('fb').innerHTML = `<div class="feedback ok"><b>✅ Brilliant! +${pts} points</b><br>${tr.explanation || ''}</div>`;
+    $('fb').innerHTML = `<div class="feedback ok"><b>✅ Brilliant! +${pts} points</b><br>${escapeHTML(tr.explanation || '')}</div>`;
     $('hintBtn').classList.add('hidden'); $('nextBtn').classList.remove('hidden');
   } else {
     btn?.classList.add('wrong');
     $('fb').innerHTML = `<div class="feedback hint">Not quite — that's how brains grow! Try again${hintsUsed < 3 ? ', or ask for a hint.' : '.'}</div>`;
     cur._wrong = ans;
     if (hintsUsed < 3) $('hintBtn').classList.remove('hidden');
-    if (attempts >= 4) { results.push({ type: cur.type, ok: false, attempts, hints: hintsUsed, pts: 2 }); $('fb').innerHTML += `<div class="feedback ok">The answer was <b>${cur.answer}</b>. ${tr.explanation || ''} (+2 for sticking with it)</div>`; $('nextBtn').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); clearInterval(timerId); }
+    if (attempts >= 4) { results.push({ type: cur.type, ok: false, attempts, hints: hintsUsed, pts: 2 }); $('fb').innerHTML += `<div class="feedback ok">The answer was <b>${escapeHTML(cur.options ? (tr.options?.[cur.options.indexOf(cur.answer)] || cur.answer) : cur.answer)}</b>. ${escapeHTML(tr.explanation || '')} (+2 for sticking with it)</div>`; $('nextBtn').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); clearInterval(timerId); }
   }
 }
 $('hintBtn').onclick = async () => {
   hintsUsed++; busy($('hintBtn'), true, 'thinking…');
   try {
     const { hint } = await api('/api/hint', { question: cur.question, options: cur.options, answer: cur.answer, wrong: cur._wrong, lang: lang(), level: hintsUsed });
-    $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${hint}</div>`;
+    $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${escapeHTML(hint)}</div>`;
   } catch (e) { $('fb').innerHTML = `<div class="feedback hint">💡 Break it into smaller steps — what do you know for sure?</div>`; }
   busy($('hintBtn'), false); if (hintsUsed >= 3) $('hintBtn').classList.add('hidden');
 };
