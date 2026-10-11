@@ -130,9 +130,9 @@ Return JSON: {"theme":string,"items":[
 
   // Weekly parent Session Digest: engagement facts only (DPDP-safe), in the parent's language + voice note.
   async '/api/digest'({ child, stats = {}, lang = 'hi-IN', speaker = 'priya' }) {
-    child = String(child || '').trim().slice(0, 40) || 'your child';
+    child = String(child || '').replace(/[^\p{L}\p{M} .'-]/gu, '').trim().slice(0, 30) || 'your child';
     stats = stats && typeof stats === 'object' ? stats : {};
-    if (!Object.values(stats).some(v => typeof v === 'number' && v > 0)) {
+    if (!Object.values(stats).some(v => Number(v) > 0)) {
       const en = `Mind Sprint this week: ${child} has not completed a sprint yet. A 10-minute puzzle sprint together tonight is a great way to start! Dinner question: if you could invent one new rule for cricket, what would it be?`;
       const text = await translate(en, lang);
       return { en, text, audio: await tts(text, lang, speaker).catch(() => null) };
