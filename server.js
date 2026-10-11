@@ -125,10 +125,23 @@ Return JSON: {"theme":string,"items":[
   },
 
   // Weekly parent Session Digest: engagement facts only (DPDP-safe), in the parent's language + voice note.
-  async '/api/digest'({ child = 'Your child', stats = {}, lang = 'hi-IN', speaker = 'priya' }) {
+  async '/api/digest'({ child, stats = {}, lang = 'hi-IN', speaker = 'priya' }) {
+    child = String(child || '').trim().slice(0, 40) || 'your child';
+    stats = stats && typeof stats === 'object' ? stats : {};
+    if (!Object.values(stats).some(v => typeof v === 'number' && v > 0)) {
+      const en = `Mind Sprint this week: ${child} has not completed a sprint yet. A 10-minute puzzle sprint together tonight is a great way to start! Dinner question: if you could invent one new rule for cricket, what would it be?`;
+      const text = await translate(en, lang);
+      return { en, text, audio: await tts(text, lang, speaker).catch(() => null) };
+    }
     const sys = 'You write a short WhatsApp weekly "Session Digest" for an Indian parent about their child\'s brain-puzzle practice. Warm, concise (60-90 words), 1-2 emojis max. Report ONLY participation facts given (days completed, puzzles solved, points, badges, a highlight). Use ONLY the facts given: never invent skills, puzzle types, or achievements that are not in the facts. Do NOT claim any cognitive/IQ/percentage improvement, do NOT compare with other children, do NOT upsell. Refer to the child by name and avoid gendered pronouns (he/she/him/her). End with one fun question the parent can ask the child at dinner.';
     const user = `Child: ${child}\nFacts: ${JSON.stringify(stats)}`;
-    const en = await chat(sys, user, 1500);
+    let en = await chat(sys, user, 1500);
+    // Facts-only guard: every number the model writes must come from the stats we were given.
+    const allowed = new Set((JSON.stringify(stats).match(/\d+/g) || []));
+    if ((en.match(/\d+/g) || []).some(n => !allowed.has(n))) {
+      const f = Object.entries(stats).filter(([, v]) => ['number', 'string'].includes(typeof v)).map(([k, v]) => `${k.replace(/([A-Z])/g, ' $1').toLowerCase()}: ${v}`).join(', ');
+      en = `Mind Sprint weekly digest for ${child} — ${f}. Lovely effort! Dinner question: what was the trickiest puzzle this week, and how did you crack it?`;
+    }
     const text = await translate(en, lang);
     const audio = await tts(text.replace(/[\u{1F300}-\u{1FAFF}☀-➿*_#]/gu, ''), lang, speaker).catch(() => null);
     return { en, text, audio };
