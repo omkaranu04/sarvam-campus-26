@@ -115,10 +115,14 @@ Return JSON: {"theme":string,"items":[
 
   // Socratic hint: nudges thinking, never reveals the answer.
   async '/api/hint'({ question, options, answer, wrong, lang = 'en-IN', level = 1 }) {
-    const sys = 'You are a warm Socratic coach for kids aged 8-14. Give ONE short hint (max 2 sentences) that nudges how to think. NEVER state, spell out, or eliminate down to the correct answer. No preamble.';
+    const sys = 'You are a warm Socratic coach for kids aged 8-14. Give ONE short hint (max 2 sentences) that nudges how to think. NEVER state, spell out, or eliminate down to the correct answer. The hint must be mathematically consistent with the correct answer and must not steer toward the kid\'s wrong attempt. Do not introduce new numbers that are not in the puzzle. No preamble.';
     const user = `Puzzle: ${question}\n${options ? 'Options: ' + options.join(' | ') : ''}\nCorrect answer (secret, do not reveal): ${answer}\nKid's wrong attempt: ${wrong || 'none yet'}\nHint level ${level} of 3 (higher = more specific, still never the answer).`;
     let hint = await chat(sys, user, 1200);
-    if (answer && hint.toLowerCase().includes(String(answer).toLowerCase())) {
+    const W = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+    const T = { 30: 'thirty', 40: 'forty', 50: 'fifty', 60: 'sixty', 70: 'seventy', 80: 'eighty', 90: 'ninety', 100: 'hundred' };
+    const a = String(answer || '').trim().toLowerCase(), n = Number(a);
+    const leaks = [a, ...(Number.isInteger(n) ? [W[n], T[n], n > 20 && n < 100 && T[n - n % 10]].filter(Boolean) : [])];
+    if (answer && leaks.some(x => x && (/^\d+$/.test(x) ? new RegExp('(^|\\D)' + x + '(\\D|$)').test(hint) : hint.toLowerCase().includes(x)))) {
       hint = 'Try breaking the puzzle into smaller steps — what do you know for sure first?';
     }
     return { hint: await translate(hint, lang) };

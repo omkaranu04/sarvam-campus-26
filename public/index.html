@@ -331,7 +331,7 @@ $('digestBtn').onclick = async () => {
   busy($('digestBtn'), true, 'Writing digest…');
   const s = weekStats(); if (!s.sprints_completed) Object.assign(s, { sprints_completed: 4, active_days: 4, puzzles_solved: 13, points: 142, highlight: 'Cracked a tricky number-pattern puzzle after two tries' , note: 'demo data' });
   try {
-    const d = await api('/api/digest', { child: $('kidName').value || 'Your child', stats: s, lang: lang() === 'en-IN' ? 'hi-IN' : lang() });
+    const d = await api('/api/digest', { child: $('kidName').value || '', stats: s, lang: lang() === 'en-IN' ? 'hi-IN' : lang() });
     const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
     $('waBox').innerHTML = `<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
       <div class="bubble">${escapeHTML(d.text)}<small>${time} ✓✓</small></div>
