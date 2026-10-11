@@ -63,7 +63,9 @@ async function translate(text, lang) {
   return data.translated_text;
 }
 
+const SPEAKERS = new Set(['priya','neha','ritu','pooja','simran','kavya','ishita','shreya','roopa','tanya','aditya','rahul','rohan','amit','dev','varun','kabir','anand','tarun']);
 async function tts(text, lang, speaker = 'priya') {
+  if (!SPEAKERS.has(speaker)) speaker = 'priya';
   const data = await sarvam('/text-to-speech', {
     text: text.slice(0, 2400),
     target_language_code: lang,
@@ -86,11 +88,23 @@ Return JSON: {"theme":string,"items":[
  {"type":"curiosity","title":string,"passage":"2-3 sentence fun science fact","question":string,"options":[4 strings],"answer":"<exact option>","explanation":string,"points":10}]}`;
     const day = extractJSON(await chat(sys, user, 8000, 'low'));
     if (!Array.isArray(day.items) || day.items.length < 4) throw new Error('Incomplete sprint from model');
+    // Auto-grading guard: never ship an item the grader cannot mark correctly.
+    for (const it of day.items) {
+      if (Array.isArray(it.options)) {
+        it.options = it.options.map(String);
+        const hit = it.options.find(o => o.trim().toLowerCase() === String(it.answer).trim().toLowerCase());
+        if (!hit || new Set(it.options.map(o => o.trim().toLowerCase())).size !== it.options.length) throw new Error(`Generated ${it.type} item failed answer check`);
+        it.answer = hit;
+      } else if (it.type === 'fast_math' && !/^-?\d+(\.\d+)?$/.test(String(it.answer).trim())) {
+        throw new Error('Generated fast_math answer is not a number');
+      }
+    }
     return { day };
   },
 
   // Translate a batch of strings in one go (keeps request count low).
   async '/api/translate'({ texts = [], lang = 'en-IN' }) {
+    texts = (Array.isArray(texts) ? texts : []).slice(0, 40).map(String);
     const out = await Promise.all(texts.map(t => translate(t, lang).catch(() => t)));
     return { texts: out };
   },
