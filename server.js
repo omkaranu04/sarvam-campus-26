@@ -185,12 +185,15 @@ const handlers = {
       const text = await translate(en, lang);
       return { en, text, audio: await tts(text, lang, speaker).catch(() => null) };
     }
-    const sys = 'You write a short WhatsApp weekly "Session Digest" for an Indian parent about their child\'s brain-puzzle practice. Warm, concise (60-90 words), 1-2 emojis max. Report ONLY participation facts given (days completed, puzzles solved, points, badges, a highlight). Use ONLY the facts given: never invent skills, puzzle types, or achievements that are not in the facts. Do NOT claim any cognitive/IQ/percentage improvement, do NOT compare with other children, do NOT upsell. Refer to the child by name and avoid gendered pronouns (he/she/him/her). End with one fun question the parent can ask the child at dinner.';
-    const user = `Child: ${child}\nFacts: ${JSON.stringify(stats)}`;
-    let en = await chat(sys, user, 1500);
-    // Facts-only guard: every number the model writes must come from the stats we were given.
+    const sys = 'You write a short WhatsApp weekly "Session Digest" for an Indian parent about their child\'s brain-puzzle practice. Warm, concise (60-90 words), 1-2 emojis max. Report ONLY participation facts given (days completed, puzzles solved, points, badges, a highlight). Use ONLY the facts given: never invent skills, puzzle types, or achievements that are not in the facts. Do NOT claim any cognitive/IQ/percentage improvement, do NOT compare with other children, do NOT upsell. Refer to the child by name and avoid gendered pronouns (he/she/him/her). Mention a highlight only if a highlight fact is given; never mention streaks, never claim it builds focus/logic/skills, never say there are no other details. End with one fun question the parent can ask the child at dinner.';
     const allowed = new Set((JSON.stringify(stats).match(/\d+/g) || []));
-    if ((en.match(/\d+/g) || []).some(n => !allowed.has(n))) {
+    const factLines = Object.entries(stats).filter(([, v]) => ['number', 'string'].includes(typeof v)).map(([k, v]) => `- ${k.replace(/([A-Z])/g, ' $1').toLowerCase()}: ${v}`).join('\n');
+    const user = `Child: ${child}\nFacts:\n${factLines}\n\nSTRICT NUMBER RULE: the only digits you may write are ${[...allowed].join(', ') || 'none'}, copied exactly as given. Write no other digits anywhere (no "7 days", no times, no dates, no list numbering, no number-words for other amounts).${Object.keys(stats).some(k => /highlight/i.test(k)) ? '' : ' There is NO highlight fact: do not write any highlight, favourite, or tricky-challenge claim.'}`;
+    const leaks = t => (t.match(/\d+/g) || []).some(n => !allowed.has(n));
+    let en = await chat(sys, user, 1500);
+    if (leaks(en)) en = await chat(sys, user + '\nYour previous draft broke the number rule. Rewrite it using only the allowed digits.', 1500).catch(() => en);
+    // Facts-only guard: every number the model writes must come from the stats we were given.
+    if (leaks(en)) {
       const f = Object.entries(stats).filter(([, v]) => ['number', 'string'].includes(typeof v)).map(([k, v]) => `${k.replace(/([A-Z])/g, ' $1').toLowerCase()}: ${v}`).join(', ');
       en = `Mind Sprint weekly digest for ${child} — ${f}. Lovely effort! Dinner question: what was the trickiest puzzle this week, and how did you crack it?`;
     }
