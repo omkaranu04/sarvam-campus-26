@@ -195,8 +195,9 @@ const save = () => { try { localStorage.setItem('ms', JSON.stringify(S)); } catc
 let BANK = FALLBACK, sprint = null, idx = 0, cur = null, tr = null, attempts = 0, hintsUsed = 0, results = [], timerId = null, deepIdx = 0;
 const lang = () => $('lang').value;
 
-async function api(path, body) {
-  const r = await fetch(path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+async function api(path, body, timeoutMs) {
+  const ctl = timeoutMs ? new AbortController() : null, tm = ctl && setTimeout(() => ctl.abort(), timeoutMs);
+  const r = await fetch(path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body), signal: ctl?.signal }).finally(() => tm && clearTimeout(tm));
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.error || 'Request failed');
   return d;
@@ -221,10 +222,11 @@ fetch('puzzles.json').then(r => r.ok ? r.json() : null).then(j => { if (j?.days?
 // ---------- sprint ----------
 $('startBtn').onclick = () => startSprint(BANK.days[+$('daySel').value]);
 $('genBtn').onclick = async () => {
-  busy($('genBtn'), true, 'sarvam-105b is writing &amp; double-checking your puzzles…');
-  try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: 10 }); day.day = 'AI'; startSprint(day); }
+  busy($('genBtn'), true, 'sarvam-105b is writing &amp; double-checking your puzzles… <span id="genT">0</span>s');
+  const t0 = Date.now(), tick = setInterval(() => { const el = document.getElementById('genT'); if (el) el.textContent = Math.round((Date.now() - t0) / 1000); }, 1000);
+  try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: 10 }, 100000); day.day = 'AI'; startSprint(day); }
   catch (e) { startSprint(BANK.days[Math.floor(Math.random() * BANK.days.length)]); }
-  finally { busy($('genBtn'), false); }
+  finally { clearInterval(tick); busy($('genBtn'), false); }
 };
 async function startSprint(day) { sprint = day; idx = 0; results = []; $('intro').classList.add('hidden'); $('done').classList.add('hidden'); $('play').classList.remove('hidden'); await load(); }
 async function load() {
