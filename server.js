@@ -113,6 +113,8 @@ async function verifySprint(day) {
   // Tolerate formatting around the solver's reply: quotes, "Option C:", "Answer -", trailing dots.
   const norm = v => String(v).trim().toLowerCase().replace(/^(option\s*[a-d]?\s*[:.)-]|answer\s*[:-]|[a-d]\s*[:.)])\s*/, '').replace(/^["'“‘*\s]+|["'”’*.,!\s]+$/g, '');
   await Promise.all(day.items.map(async (it, k) => {
+    // The solver reads the model's own passage, so it cannot catch false facts: use hand-checked curiosity items.
+    if (it.type === 'curiosity') { const rep = bankItem('curiosity'); if (rep) { day.items[k] = rep; return; } }
     let ok = false;
     try {
       const q = `${it.passage ? it.passage + '\n' : ''}${it.question}\n${it.options ? 'Options:\n' + it.options.join('\n') + '\nReply with ONLY the exact text of the single correct option.' : 'Reply with ONLY the final number.'}`;
@@ -158,7 +160,10 @@ const handlers = {
 
   // Socratic hint: nudges thinking, never reveals the answer.
   async '/api/hint'({ question, options, answer, wrong, lang = 'en-IN', level = 1 }) {
-    const sys = 'You are a warm Socratic coach for kids aged 8-14. Give ONE short hint (max 2 sentences) that nudges how to think. NEVER state, spell out, or eliminate down to the correct answer. The hint must be mathematically consistent with the correct answer and must not steer toward the kid\'s wrong attempt. Do not introduce new numbers that are not in the puzzle. No preamble.';
+    options = Array.isArray(options) ? options.map(String) : null;
+    // MCQ (riddle/logic) level 3 tends to describe the answer outright; cap it.
+    level = Math.max(1, Math.min(options ? 2 : 3, Number(level) || 1));
+    const sys = 'You are a warm Socratic coach for kids aged 8-14. Give ONE short hint (max 2 sentences) that nudges how to think. NEVER state, spell out, or eliminate down to the correct answer. The hint must be mathematically consistent with the correct answer and must not steer toward the kid\'s wrong attempt. Do not introduce new numbers that are not in the puzzle. Never describe what the answer object is, does, or is used for, and never use any word from the answer. No preamble.';
     const user = `Puzzle: ${question}\n${options ? 'Options: ' + options.join(' | ') : ''}\nCorrect answer (secret, do not reveal): ${answer}\nThe kid ${wrong ? 'tried an answer that was wrong' : 'has not answered yet'}.\nHint level ${level} of 3 (higher = more specific, still never the answer).`;
     let hint = await chat(sys, user, 1200);
     const W = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
@@ -170,6 +175,15 @@ const handlers = {
     const qNums = new Set(String(question).match(/\d+(\.\d+)?/g) || []);
     const newNum = Number.isFinite(n) && a !== '' && (hint.match(/\d+(\.\d+)?/g) || []).some(x => !qNums.has(x) && Number(x) > 3);
     if (newNum) hint = 'Do it in two steps: first work out the part inside the puzzle that comes first, then use that result for the next step.';
+    // Content words of a text answer ("A keyboard" -> keyboard) must not appear in the hint.
+    const words = Number.isFinite(n) ? [] : a.split(/[^\p{L}]+/u).filter(w => w.length >= 3 && !['the', 'and', 'for'].includes(w));
+    // Descriptive giveaways ("where you type on a computer") slip past word checks: ask sarvam-105b to judge.
+    let gives = words.some(w => hint.toLowerCase().includes(w.replace(/s$/, '')));
+    if (!gives && options && answer) {
+      const v = await chat('You judge hints for a kids puzzle game. Reply with ONLY YES or NO.', `Options: ${options.join(' | ')}\nSecret answer: ${answer}\nHint: ${hint}\nReading ONLY this hint (not the puzzle), does it name, describe, or mention what "${answer}" does or is used for, so that it points to "${answer}" more than to the other options? If in doubt, YES.`, 300).catch(() => 'NO');
+      gives = /yes/i.test(v);
+    }
+    if (gives) hint = 'Read each line of the puzzle again: which option fits EVERY clue, not just one?';
     if (answer && leaks.some(x => x && (/^\d+$/.test(x) ? new RegExp('(^|\\D)' + x + '(\\D|$)').test(hint) : hint.toLowerCase().includes(x)))) {
       hint = 'Try breaking the puzzle into smaller steps — what do you know for sure first?';
     }
