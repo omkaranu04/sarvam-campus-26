@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mind Sprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#ff6b35">
+<meta name="description" content="Mind Sprint: 7-minute daily logic sprints for kids in 11 Indian languages, powered by Sarvam AI.">
 <style>
 :root{
   --bg:#fff8ef; --card:#ffffff; --ink:#1d1a2f; --muted:#6b6880; --line:#eadfce;
@@ -16,9 +18,9 @@
 }}
 :root[data-theme="dark"]{ --bg:#14121f; --card:#1f1c2e; --ink:#f3effa; --muted:#a6a1bd; --line:#2f2b44; --soft:#2a2238; --wa:#1f4d3a; --wabg:#101820; }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,"Noto Sans Devanagari","Noto Sans Bengali","Noto Sans Tamil",system-ui,sans-serif}
 h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;margin:0}
-.wrap{max-width:860px;margin:0 auto;padding:16px}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 72px}
 header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:10px}
 .logo .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-size:22px}
@@ -66,6 +68,49 @@ nav button.on{background:var(--brand);color:#fff}
 .tag-sarvam{font-size:11px;color:var(--muted)}
 .hidden{display:none}
 .big{font-size:44px}
+/* --- round 3 --- */
+:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
+.btn,.opt,nav button,select{min-height:44px}
+.opt{display:flex;gap:10px;align-items:center}
+.opt kbd{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--soft);color:var(--brand2);font:700 13px Inter,sans-serif}
+.opt.right{animation:pop .35s ease}
+.opt.wrong{animation:shake .35s ease}
+@keyframes pop{50%{transform:scale(1.04)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.dots{display:flex;gap:6px;align-items:center}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line);display:block;transition:background .3s}
+.dots i.done{background:var(--ok)} .dots i.now{background:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 25%,transparent)}
+.garden{display:flex;gap:4px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;background:var(--soft);border-radius:14px;align-items:flex-end;min-height:52px}
+.garden span{font-size:26px;line-height:1;animation:grow .5s ease both}
+@keyframes grow{from{transform:scale(.2) translateY(10px);opacity:0}}
+.numpad{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px;max-width:360px}
+.numpad button{min-height:48px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:700 18px "Baloo 2",sans-serif;cursor:pointer}
+.numpad button:active{background:var(--soft)}
+.modal{position:fixed;inset:0;background:rgba(20,18,31,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.modal.hidden{display:none}
+.modal .card{max-width:440px;width:100%;margin:0;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.modal label{display:block;font-weight:600;margin:12px 0 4px}
+.modal input,.modal select{width:100%;min-height:44px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{flex:1;min-height:44px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:700 14px "Baloo 2",sans-serif;cursor:pointer;padding:4px 8px}
+.chips button.on{border-color:var(--brand);background:var(--soft);color:var(--brand)}
+.toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:calc(100% - 32px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media (max-width:560px){.trust{grid-template-columns:1fr}}
+.trust div{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:14px}
+#aiLog{position:fixed;right:12px;bottom:12px;z-index:40;max-width:340px;width:calc(100% - 24px)}
+#aiLog summary{list-style:none;cursor:pointer;background:var(--brand2);color:#fff;border-radius:99px;padding:8px 14px;font:700 13px "Baloo 2",sans-serif;float:right;min-height:36px}
+#aiLog summary::-webkit-details-marker{display:none}
+#aiLog .panel{clear:both;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;max-height:46vh;overflow:auto;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#aiLog[open] summary{margin-bottom:8px}
+#aiLog .panel{order:-1}
+#aiRows div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
+#aiRows b{color:var(--brand2)}
+.wa-head{display:flex;align-items:center;gap:10px;background:#075e54;color:#fff;border-radius:12px 12px 0 0;margin:-16px -16px 12px;padding:10px 14px}
+.wa-head .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center}
+.wa-head small{display:block;opacity:.8;font-size:11px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:560px){.logo small{font-size:11px} .card{padding:16px} .q{font-size:18px}}
 </style>
 </head>
 <body>
@@ -98,21 +143,26 @@ nav button.on{background:var(--brand);color:#fff}
         <input id="theme" placeholder="Theme for an AI sprint (e.g. space, cricket)" style="flex:1;min-width:200px">
         <button class="btn alt" id="genBtn">✨ Generate fresh sprint</button>
       </div>
+      <div style="margin-top:10px"><span class="muted" id="levelLbl">AI sprint level</span><div class="chips" id="levelChips" role="radiogroup" aria-labelledby="levelLbl" style="margin-top:4px"><button data-lv="warm" role="radio">🌤️ Warm-up</button><button data-lv="brainy" role="radio">🧠 Brainy</button><button data-lv="genius" role="radio">🚀 Genius</button></div></div>
       <div class="tag-sarvam" style="margin-top:6px">Fresh sprints written by sarvam-105b · translated with Sarvam Translate · read aloud with Bulbul v3</div>
+      <div class="garden" id="garden" aria-label="Your sprint garden"></div>
+      <div class="muted" id="gardenMsg" style="font-size:13px;margin-top:4px"></div>
     </div>
 
     <div class="card hidden" id="play">
       <div class="row" style="justify-content:space-between">
         <span class="pill" id="typePill"></span>
-        <div class="row"><span class="timer" id="timer"></span><button class="btn ghost" id="speakBtn">🔊 Read aloud</button></div>
+        <div class="row"><span class="timer" id="timer" aria-hidden="true"></span><button class="btn ghost" id="speakBtn">🔊 Read aloud</button></div>
       </div>
+      <div class="row" style="justify-content:space-between;margin-top:10px"><div class="dots" id="dots" aria-hidden="true"></div><span class="muted" id="stepLbl"></span></div>
       <div class="progress"><i id="bar" style="width:0"></i></div>
       <h3 id="title"></h3>
       <div class="passage hidden" id="passage"></div>
       <div class="q" id="question"></div>
       <div class="opts" id="opts"></div>
-      <div class="row hidden" id="numRow"><input id="numIn" inputmode="decimal" placeholder="Your answer" style="width:180px"><button class="btn" id="numBtn">Check</button></div>
-      <div id="fb"></div>
+      <div class="hidden" id="numRow"><div class="row"><input id="numIn" inputmode="decimal" aria-label="Your answer" placeholder="Your answer" style="width:180px;font-size:20px"><button class="btn" id="numBtn">Check</button></div>
+        <div class="numpad" id="numpad" aria-label="Number pad"></div></div>
+      <div id="fb" aria-live="polite" role="status"></div>
       <div class="row" style="margin-top:14px;justify-content:space-between">
         <button class="btn ghost hidden" id="hintBtn">💡 Give me a hint</button>
         <button class="btn hidden" id="nextBtn">Next →</button>
@@ -120,10 +170,11 @@ nav button.on{background:var(--brand);color:#fff}
     </div>
 
     <div class="card hidden" id="done">
-      <div class="big">🎉</div>
+      <div class="big" aria-hidden="true">🎉</div>
       <h2>Sprint complete!</h2>
       <p class="muted" id="doneMsg"></p>
       <div class="badges" id="dayBadges"></div>
+      <div class="garden" id="garden2" aria-label="Your sprint garden"></div>
       <div class="row" style="margin-top:14px"><button class="btn" id="againBtn">Back to start</button><button class="btn alt" id="toParent">Show my parent 👪</button></div>
     </div>
   </section>
@@ -147,6 +198,18 @@ nav button.on{background:var(--brand);color:#fff}
       <p class="muted">Written by sarvam-105b in English, translated into your chosen language, then sent as a Bulbul voice note. It only reports facts like days done and points. It never makes "IQ +12%" claims or profiles your child, so it stays within DPDP Act §9(3).</p>
       <div class="wa" id="waBox"><div class="muted">Your digest will appear here like a WhatsApp message.</div></div>
     </div>
+    <div class="card">
+      <h2>Our promise to parents 🤝</h2>
+      <div class="trust">
+        <div>🚫 <b>No ads, no upsell</b> shown to children. Ever.</div>
+        <div>🙅 <b>No profiling, no "IQ +12%"</b> claims, no comparing your child with others.</div>
+        <div>📱 <b>Progress stays on this phone.</b> Name, badges and history live in this browser only.</div>
+        <div>🌱 <b>Badges are never lost.</b> No streaks to break, no punishment for missed days.</div>
+        <div>💬 <b>WhatsApp digest is opt-in.</b> Reply STOP any time to pause, START to resume.</div>
+        <div>💭 <b>Deep Thought is ungraded.</b> Ideas are explored, never scored.</div>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn ghost" id="shareBtn">📤 Tell another parent</button><button class="btn ghost" id="resetBtn">🗑️ Clear this device's data</button></div>
+    </div>
   </section>
 
   <!-- DEEP THOUGHT -->
@@ -166,6 +229,18 @@ nav button.on{background:var(--brand);color:#fff}
     </div>
   </section>
 
+  <details id="aiLog"><summary>⚡ How Sarvam powers this <span id="aiCount"></span></summary><div class="panel"><b>Live Sarvam calls from this page</b><div class="muted" style="font-size:12px">Each row is a real request: what it did, which Sarvam model, and how long it took.</div><div id="aiRows"><div class="muted">Play a puzzle in another language, ask a hint or tap 🔊 to see Sarvam at work.</div></div></div></details>
+  <div class="modal hidden" id="onboard" role="dialog" aria-modal="true" aria-labelledby="obTitle">
+    <div class="card">
+      <div class="logo"><div class="mark" aria-hidden="true">🧠</div><h2 id="obTitle">Welcome to Mind Sprint!</h2></div>
+      <p class="muted" style="margin:8px 0 0">7-minute brain sprints in your language. A grown-up, please set this up with your child.</p>
+      <label for="obName">Child's first name</label><input id="obName" maxlength="20" autocomplete="off" placeholder="e.g. Aarav">
+      <label for="obLang">Language</label><select id="obLang"></select>
+      <label id="obAgeLbl">Age</label><div class="chips" id="obAge" role="radiogroup" aria-labelledby="obAgeLbl"><button data-age="8" role="radio">8-9</button><button data-age="10" role="radio">10-11</button><button data-age="12" role="radio">12-14</button></div>
+      <p class="muted" style="font-size:13px">🔒 Saved only on this phone. No sign-up, no ads, no profiling. Sarvam AI translates and reads puzzles aloud; nothing about your child is stored on our servers.</p>
+      <button class="btn" id="obGo" style="width:100%">Let's sprint ▶</button>
+    </div>
+  </div>
   <p class="muted" style="text-align:center;margin-top:20px">Mind Sprint · IIT Kharagpur founders · Winter Mind Sprint pilot, Dec 2026</p>
 </div>
 
@@ -195,21 +270,80 @@ const save = () => { try { localStorage.setItem('ms', JSON.stringify(S)); } catc
 let BANK = FALLBACK, sprint = null, idx = 0, cur = null, tr = null, attempts = 0, hintsUsed = 0, results = [], timerId = null, deepIdx = 0;
 const lang = () => $('lang').value;
 
-async function api(path, body, timeoutMs) {
-  const ctl = timeoutMs ? new AbortController() : null, tm = ctl && setTimeout(() => ctl.abort(), timeoutMs);
-  const r = await fetch(path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body), signal: ctl?.signal }).finally(() => tm && clearTimeout(tm));
-  const d = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(d.error || 'Request failed');
-  return d;
+const MODELS = { '/api/generate':['Wrote + double-checked a sprint','sarvam-105b ×2'], '/api/translate':['Translated','sarvam-translate:v1'], '/api/tts':['Read aloud','bulbul:v3'], '/api/hint':['Gave a hint (leak-checked)','sarvam-105b'], '/api/digest':['Wrote parent digest + voice note','sarvam-105b → translate → bulbul:v3'], '/api/reflect':['Heard + replied to a thought','saarika:v2.5 → sarvam-105b'] };
+let aiN = 0;
+function logAI(path, ms, ok) {
+  const m = MODELS[path]; if (!m) return;
+  if (!aiN++) $('aiRows').innerHTML = '';
+  const row = document.createElement('div');
+  row.innerHTML = `<span>${ok ? '' : '⚠️ '}${m[0]}<br><b>${m[1]}</b></span><span class="muted">${ms < 150 ? "cached" : (ms/1000).toFixed(1) + "s"}</span>`;
+  $('aiRows').prepend(row); $('aiCount').textContent = `· ${aiN}`;
 }
+// Every network call: timeout (default 30s), live model log, friendly error text.
+async function api(path, body, timeoutMs = 30000) {
+  const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), timeoutMs), t0 = performance.now();
+  try {
+    const r = await fetch(path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body), signal: ctl.signal });
+    const d = await r.json().catch(() => ({}));
+    logAI(path, performance.now() - t0, r.ok);
+    if (!r.ok) throw new Error(d.error || 'Request failed');
+    return d;
+  } catch (e) { if (e.name === 'AbortError') { logAI(path, performance.now() - t0, false); throw new Error('Sarvam is taking a little long'); } throw e; }
+  finally { clearTimeout(tm); }
+}
+function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.append(t); setTimeout(() => t.remove(), 3500); }
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let actx;
+function blip(good) {
+  try { actx ??= new (window.AudioContext || window.webkitAudioContext)(); const notes = good ? [523, 659, 784] : [330, 262];
+    notes.forEach((f, i) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = 'triangle'; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
+      const t = actx.currentTime + i * 0.09; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18); o.start(t); o.stop(t + 0.2); });
+  } catch {}
+}
+function confetti(n = 90) {
+  if (reduced) return;
+  const c = document.createElement('canvas'), x = c.getContext('2d'), W = c.width = innerWidth, H = c.height = innerHeight;
+  Object.assign(c.style, { position:'fixed', inset:'0', pointerEvents:'none', zIndex:70 }); document.body.append(c);
+  const cols = ['#ff6b35','#5b4bdb','#1f9d63','#ffc23d','#e0475b'];
+  const ps = Array.from({ length: n }, () => ({ x: W/2 + (Math.random()-.5)*W*.3, y: H*.45, vx: (Math.random()-.5)*12, vy: -Math.random()*12-4, r: Math.random()*6+4, c: cols[Math.random()*5|0], a: Math.random()*6 }));
+  let f = 0; (function step() { x.clearRect(0,0,W,H); ps.forEach(p => { p.vy += .35; p.x += p.vx; p.y += p.vy; p.a += .2; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillStyle = p.c; x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); x.restore(); }); if (++f < 90) requestAnimationFrame(step); else c.remove(); })();
+}
+const CHEERS = ['Brilliant!','Super sharp!','Shabaash!','You cracked it!','Brain power!','Wah, ekdum sahi!'];
+const NUDGES = ["Not quite — that's how brains grow! Try again", 'Close one! Take a breath and look again', 'Good try! Mistakes are clues'];
 function busy(btn, on, label) { if (on) { btn.dataset.l = btn.innerHTML; btn.innerHTML = `<span class="spin"></span> ${label||''}`; btn.disabled = true; } else { btn.innerHTML = btn.dataset.l; btn.disabled = false; } }
-function play(b64) { if (!b64) return; const a = new Audio('data:audio/wav;base64,' + b64); a.play(); return a; }
+function play(b64) { if (!b64) return; const a = new Audio('data:audio/wav;base64,' + b64); a.play().catch(() => {}); return a; }
 function award(id) { if (!S.badges.includes(id)) { S.badges.push(id); save(); return true; } return false; }
 
 // ---------- setup ----------
-LANGS.forEach(([v,l]) => $('lang').add(new Option(l, v)));
+LANGS.forEach(([v,l]) => { $('lang').add(new Option(l, v)); $('obLang').add(new Option(l, v)); });
 $('lang').value = S.lang || 'en-IN';
-$('lang').onchange = async () => { S.lang = lang(); save(); if (lang() !== 'en-IN') award('polyglot'); if (cur) { await localize(); render(); } renderDeep(); };
+$('lang').onchange = async () => { S.lang = lang(); save(); if (lang() !== 'en-IN') award('polyglot'); if (cur && !$('play').classList.contains('hidden')) { await localize(); render(); } renderDeep(); };
+// ---------- first run ----------
+const cleanName = v => String(v || '').replace(/[^\p{L}\p{M} .'-]/gu, '').trim().slice(0, 20);
+function chipPick(box, attr, val) { box.querySelectorAll('button').forEach(b => { const on = b.dataset[attr] === String(val); b.classList.toggle('on', on); b.setAttribute('aria-checked', on); }); }
+function applyProfile() {
+  $('kidNameLbl').textContent = S.name || 'champ';
+  if (S.name) $('kidName').value = S.name;
+  chipPick($('levelChips'), 'lv', S.level || 'brainy');
+}
+if (!S.onboarded) {
+  $('onboard').classList.remove('hidden'); $('obLang').value = lang(); chipPick($('obAge'), 'age', S.age || 10); setTimeout(() => $('obName').focus(), 50);
+}
+$('obAge').onclick = e => { const b = e.target.closest('button'); if (b) { S.age = +b.dataset.age; chipPick($('obAge'), 'age', S.age); } };
+$('obName').onkeydown = e => { if (e.key === 'Enter') $('obGo').click(); };
+$('obGo').onclick = () => {
+  S.name = cleanName($('obName').value); S.age ??= 10; S.onboarded = true;
+  if ($('obLang').value !== lang()) { $('lang').value = $('obLang').value; $('lang').onchange(); }
+  save(); applyProfile(); $('onboard').classList.add('hidden'); $('startBtn').focus();
+  toast(S.name ? `Namaste ${S.name}! Your first sprint is ready.` : 'Namaste! Your first sprint is ready.');
+};
+$('levelChips').onclick = e => { const b = e.target.closest('button'); if (b) { S.level = b.dataset.lv; save(); chipPick($('levelChips'), 'lv', S.level); } };
+const PLANTS = ['🌱','🌿','🌷','🌻','🌳','🌼','🍀','🌺'];
+function renderGarden() {
+  const n = S.log.length, html = n ? S.log.map((l, i) => `<span title="${escapeHTML(l.date + ' · ' + (l.theme || ''))}" style="animation-delay:${Math.min(i, 12) * 40}ms">${PLANTS[i % PLANTS.length]}</span>`).join('') : '<span>🟫</span>';
+  $('garden').innerHTML = html; $('garden2').innerHTML = html;
+  $('gardenMsg').textContent = n ? `Your sprint garden: ${n} plant${n > 1 ? 's' : ''}. Every finished sprint grows a new one, and plants never wilt.` : 'Your sprint garden is ready. Finish a sprint to plant your first seed!';
+}
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
 function showTab(t) {
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
@@ -217,6 +351,7 @@ function showTab(t) {
   if (t === 'parent') renderParent();
 }
 function fillDays() { $('daySel').innerHTML = ''; BANK.days.forEach((d,i) => $('daySel').add(new Option(`Day ${d.day} · ${d.theme}`, i))); }
+applyProfile(); renderGarden();
 fetch('puzzles.json').then(r => r.ok ? r.json() : null).then(j => { if (j?.days?.length) BANK = j; fillDays(); renderDeep(); }).catch(() => { fillDays(); renderDeep(); });
 
 // ---------- sprint ----------
@@ -224,14 +359,16 @@ $('startBtn').onclick = () => startSprint(BANK.days[+$('daySel').value]);
 $('genBtn').onclick = async () => {
   busy($('genBtn'), true, 'sarvam-105b is writing &amp; double-checking your puzzles… <span id="genT">0</span>s');
   const t0 = Date.now(), tick = setInterval(() => { const el = document.getElementById('genT'); if (el) el.textContent = Math.round((Date.now() - t0) / 1000); }, 1000);
-  try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: 10 }, 100000); day.day = 'AI'; startSprint(day); }
-  catch (e) { startSprint(BANK.days[Math.floor(Math.random() * BANK.days.length)]); }
+  try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: Math.min(14, Math.max(7, (S.age || 10) + ({ warm: -2, brainy: 0, genius: 2 }[S.level || 'brainy']))) }, 100000); day.day = 'AI'; startSprint(day); }
+  catch (e) { toast('Sarvam needed more time, so here is a hand-checked sprint instead.'); startSprint(BANK.days[Math.floor(Math.random() * BANK.days.length)]); }
   finally { clearInterval(tick); busy($('genBtn'), false); }
 };
 async function startSprint(day) { sprint = day; idx = 0; results = []; $('intro').classList.add('hidden'); $('done').classList.add('hidden'); $('play').classList.remove('hidden'); await load(); }
 async function load() {
   cur = sprint.items[idx]; attempts = 0; hintsUsed = 0;
   $('bar').style.width = (idx / sprint.items.length * 100) + '%';
+  $('dots').innerHTML = sprint.items.map((_, i) => `<i class="${i < idx ? 'done' : i === idx ? 'now' : ''}"></i>`).join('');
+  $('stepLbl').textContent = `Puzzle ${idx + 1} of ${sprint.items.length}`;
   await localize(); render();
 }
 async function localize() {
@@ -258,14 +395,23 @@ function render() {
   $('opts').innerHTML = '';
   clearInterval(timerId); $('timer').textContent = '';
   if (it.type === 'fast_math') {
-    $('numRow').classList.remove('hidden'); $('numIn').value = ''; $('numIn').focus();
+    $('numRow').classList.remove('hidden'); $('numIn').value = ''; if (matchMedia('(pointer:fine)').matches) $('numIn').focus();
     let t = 0; timerId = setInterval(() => $('timer').textContent = `⏱ ${++t}s`, 1000);
   } else {
     $('numRow').classList.add('hidden');
-    it.options.forEach((o, i) => { const b = document.createElement('button'); b.className = 'opt'; b.textContent = tr.options?.[i] || o; b.onclick = () => check(o, b); $('opts').append(b); });
+    it.options.forEach((o, i) => { const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = `<kbd aria-hidden="true">${i + 1}</kbd><span></span>`; b.lastChild.textContent = tr.options?.[i] || o; b.onclick = () => check(o, b); $('opts').append(b); });
   }
 }
-$('numBtn').onclick = () => check($('numIn').value.trim(), null);
+$('numBtn').onclick = () => { const v = $('numIn').value.trim(); if (!v) { $('numIn').focus(); return; } check(v, null); };
+$('numpad').innerHTML = ['1','2','3','4','5','6','7','8','9','0','.','-','⌫'].map(k => `<button type="button" data-k="${k}" aria-label="${k === '⌫' ? 'Delete' : k}">${k}</button>`).join('');
+$('numpad').onclick = e => { const k = e.target.closest('button')?.dataset.k; if (!k) return; const el = $('numIn'); el.value = k === '⌫' ? el.value.slice(0, -1) : (el.value + k).slice(0, 12); };
+document.addEventListener('keydown', e => {
+  if ($('play').classList.contains('hidden') || e.target.matches('input,textarea,select') || e.ctrlKey || e.metaKey || e.altKey) return;
+  const n = +e.key; const opts = $('opts').querySelectorAll('.opt');
+  if (n >= 1 && n <= opts.length) { e.preventDefault(); opts[n - 1].click(); }
+  else if (e.key === 'Enter' && !$('nextBtn').classList.contains('hidden') && document.activeElement?.tagName !== 'BUTTON') { e.preventDefault(); $('nextBtn').click(); }
+  else if (e.key.toLowerCase() === 'h' && !$('hintBtn').classList.contains('hidden')) $('hintBtn').click();
+});
 $('numIn').onkeydown = e => { if (e.key === 'Enter') $('numBtn').click(); };
 // Accept Indic-script digits (०-९, ০-৯, ௦-௯, …), trailing units ("34 runs") and 7.50 == 7.5.
 function norm(s) {
@@ -282,11 +428,14 @@ function check(ans, btn) {
     btn?.classList.add('right');
     const pts = Math.max(4, (cur.points || 10) - (attempts - 1) * 2 - hintsUsed * 2);
     results.push({ type: cur.type, ok: true, attempts, hints: hintsUsed, pts });
-    $('fb').innerHTML = `<div class="feedback ok"><b>✅ Brilliant! +${pts} points</b><br>${escapeHTML(tr.explanation || '')}</div>`;
-    $('hintBtn').classList.add('hidden'); $('nextBtn').classList.remove('hidden');
+    $('fb').innerHTML = `<div class="feedback ok"><b>✅ ${CHEERS[Math.random() * CHEERS.length | 0]} +${pts} points</b><br>${escapeHTML(tr.explanation || '')}${tr.explanation ? '<div style="margin-top:8px"><button class="btn ghost" id="explainSpeak">🔊 Hear why</button></div>' : ''}</div>`;
+    $('explainSpeak') && ($('explainSpeak').onclick = () => say($('explainSpeak'), tr.explanation));
+    $('hintBtn').classList.add('hidden'); $('nextBtn').classList.remove('hidden'); $('nextBtn').focus({ preventScroll: true });
+    confetti(attempts === 1 && !hintsUsed ? 110 : 50); blip(true);
   } else {
     btn?.classList.add('wrong');
-    $('fb').innerHTML = `<div class="feedback hint">Not quite — that's how brains grow! Try again${hintsUsed < 3 ? ', or ask for a hint.' : '.'}</div>`;
+    blip(false); if (btn) btn.disabled = true;
+    $('fb').innerHTML = `<div class="feedback hint">${NUDGES[(attempts - 1) % NUDGES.length]}${hintsUsed < 3 ? ', or ask for a hint 💡' : '.'}</div>`;
     cur._wrong = ans;
     if (hintsUsed < 3) $('hintBtn').classList.remove('hidden');
     if (attempts >= 4) { results.push({ type: cur.type, ok: false, attempts, hints: hintsUsed, pts: 2 }); $('fb').innerHTML += `<div class="feedback ok">The answer was <b>${escapeHTML(cur.options ? (tr.options?.[cur.options.indexOf(cur.answer)] || cur.answer) : cur.answer)}</b>. ${escapeHTML(tr.explanation || '')} (+2 for sticking with it)</div>`; $('nextBtn').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); clearInterval(timerId); }
@@ -296,19 +445,21 @@ $('hintBtn').onclick = async () => {
   hintsUsed++; busy($('hintBtn'), true, 'thinking…');
   try {
     const { hint } = await api('/api/hint', { question: cur.question, options: cur.options, answer: cur.answer, wrong: cur._wrong, lang: lang(), level: hintsUsed });
-    $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${escapeHTML(hint)}</div>`;
-  } catch (e) { $('fb').innerHTML = `<div class="feedback hint">💡 Break it into smaller steps — what do you know for sure?</div>`; }
+    $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${escapeHTML(hint)} <span aria-hidden="true">${'●'.repeat(hintsUsed)}${'○'.repeat(3 - hintsUsed)}</span></div>`;
+  } catch (e) { $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${['Read the question once more, slowly. What do you know for sure?', 'Break it into smaller steps and solve one step at a time.', 'Try each option (or a guess) and check it against the question.'][hintsUsed - 1] || ''}</div>`; }
   busy($('hintBtn'), false); if (hintsUsed >= 3) $('hintBtn').classList.add('hidden');
 };
-$('speakBtn').onclick = async () => {
-  const txt = [tr.passage, tr.question, ...(tr.options || []).map((o,i) => `${'ABCD'[i]}: ${o}`)].filter(Boolean).join('. ');
-  busy($('speakBtn'), true, 'Bulbul…');
-  try { const { audio } = await api('/api/tts', { text: txt, lang: lang() }); play(audio); } catch (e) { alert('Voice unavailable: ' + e.message); }
-  busy($('speakBtn'), false);
-};
+async function say(btn, text) {
+  if (!text) return; busy(btn, true, 'Bulbul…');
+  try { const { audio } = await api('/api/tts', { text, lang: lang() }); play(audio); }
+  catch (e) { toast('Our voice is resting right now — the text is right here on screen.'); }
+  busy(btn, false);
+}
+$('speakBtn').onclick = () => say($('speakBtn'), [tr.passage, tr.question, ...(tr.options || []).map((o,i) => `${i + 1}: ${o}`)].filter(Boolean).join('. '));
 $('nextBtn').onclick = () => { idx++; if (idx < sprint.items.length) load(); else finish(); };
 function finish() {
-  $('play').classList.add('hidden'); $('done').classList.remove('hidden'); $('bar').style.width = '100%';
+  $('play').classList.add('hidden'); $('done').classList.remove('hidden'); $('bar').style.width = '100%'; clearInterval(timerId);
+  confetti(160); blip(true);
   const pts = results.reduce((a, r) => a + r.pts, 0), right = results.filter(r => r.ok).length;
   S.log.push({ date: new Date().toISOString().slice(0,10), day: sprint.day, theme: sprint.theme, pts, right, total: results.length, hints: results.reduce((a,r)=>a+r.hints,0), comeback: results.some(r => r.ok && r.attempts > 1) });
   const fresh = [];
@@ -318,10 +469,11 @@ function finish() {
   if (right === results.length && award('allfour')) fresh.push('allfour');
   if (S.log.length >= 3 && award('three')) fresh.push('three');
   save();
-  $('doneMsg').textContent = `${right}/${results.length} solved · ${pts} points today · ${S.log.length} sprint${S.log.length>1?'s':''} finished so far.`;
+  renderGarden();
+  $('doneMsg').textContent = `${S.name ? S.name + ', ' : ''}${right}/${results.length} solved · ${pts} points today · ${S.log.length} sprint${S.log.length>1?'s':''} finished so far.`;
   $('dayBadges').innerHTML = fresh.length ? fresh.map(badgeHTML).join('') : '<span class="muted">Every finished sprint counts. Come back tomorrow, or whenever you like. No streak to lose!</span>';
 }
-$('againBtn').onclick = () => { $('done').classList.add('hidden'); $('intro').classList.remove('hidden'); };
+$('againBtn').onclick = () => { $('done').classList.add('hidden'); $('intro').classList.remove('hidden'); renderGarden(); };
 $('toParent').onclick = () => showTab('parent');
 function badgeHTML(id) { const b = BADGES.find(x => x[0] === id); return `<div class="badge"><span style="font-size:22px">${b[1]}</span><div><b>${b[2]}</b><br><span class="muted">${b[3]}</span></div></div>`; }
 
@@ -343,12 +495,13 @@ $('digestBtn').onclick = async () => {
   try {
     const d = await api('/api/digest', { child: $('kidName').value || '', stats: s, lang: lang() === 'en-IN' ? 'hi-IN' : lang() });
     const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-    $('waBox').innerHTML = `${demo ? '<div class="muted" style="margin-bottom:8px;font-weight:700">Sample digest — demo data, because no sprint has been played on this device yet.</div>' : ''}<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
+    const nm = escapeHTML(cleanName($('kidName').value) || 'your child');
+    $('waBox').innerHTML = `<div class="wa-head"><div class="av" aria-hidden="true">🧠</div><div><b>Mind Sprint</b><small>Weekly digest about ${nm} · in ${escapeHTML(LANGS.find(l => l[0] === (lang() === 'en-IN' ? 'hi-IN' : lang()))?.[1] || '')}</small></div></div>${demo ? '<div class="muted" style="margin-bottom:8px;font-weight:700">Sample digest — demo data, because no sprint has been played on this device yet.</div>' : ''}<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
       <div class="bubble">${escapeHTML(d.text)}<small>${time} ✓✓</small></div>
       ${d.audio ? `<div class="bubble" style="margin-top:8px">🎙️ Voice note (Bulbul)<br><audio controls src="data:audio/wav;base64,${d.audio}" style="width:100%;margin-top:6px"></audio><small>${time} ✓✓</small></div>` : ''}
       <details style="margin-top:8px"><summary class="muted">English original</summary><p class="muted">${escapeHTML(d.en)}</p></details>
       <div class="muted" style="margin-top:8px">Reply <b>STOP</b> to pause · <b>START</b> to resume</div>`;
-  } catch (e) { $('waBox').innerHTML = `<div class="muted">Couldn't reach Sarvam: ${escapeHTML(e.message)}</div>`; }
+  } catch (e) { $('waBox').innerHTML = `<div class="muted">Sarvam couldn't write the digest just now (${escapeHTML(e.message)}). Please try again in a moment.</div>`; }
   busy($('digestBtn'), false);
 };
 function escapeHTML(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -360,7 +513,13 @@ async function renderDeep() {
   if (lang() !== 'en-IN') { try { const { texts } = await api('/api/translate', { texts: [q], lang: lang() }); $('deepQ').textContent = texts[0]; } catch {} }
 }
 $('deepNext').onclick = () => { deepIdx++; renderDeep(); };
-$('deepSpeak').onclick = async () => { busy($('deepSpeak'), true); try { const { audio } = await api('/api/tts', { text: $('deepQ').textContent, lang: lang() }); play(audio); } catch {} busy($('deepSpeak'), false); };
+$('deepSpeak').onclick = () => say($('deepSpeak'), $('deepQ').textContent);
+$('deepText').onkeydown = e => { if (e.key === 'Enter') $('deepSend').click(); };
+$('shareBtn').onclick = async () => {
+  const text = 'Try Mind Sprint: 7-minute logic puzzles for kids in 11 Indian languages, with read-aloud and a weekly WhatsApp digest. No ads, no streak pressure. ' + location.origin;
+  try { if (navigator.share) await navigator.share({ title: 'Mind Sprint', text }); else { await navigator.clipboard.writeText(text); toast('Copied! Paste it in your parents\' WhatsApp group.'); } } catch {}
+};
+$('resetBtn').onclick = () => { if (confirm('Remove name, badges and sprint history from this device?')) { try { localStorage.removeItem('ms'); } catch {} location.reload(); } };
 async function reflect(body) {
   $('deepOut').innerHTML = '<span class="spin"></span> Listening to your idea…';
   try {
@@ -378,12 +537,12 @@ async function startRec() {
     rec.ondataavailable = e => chunks.push(e.data);
     rec.onstop = async () => { stream.getTracks().forEach(t => t.stop()); const blob = new Blob(chunks, { type: 'audio/webm' }); const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(blob); }); reflect({ audio: b64 }); };
     rec.start(); $('recBtn').textContent = '🔴 Listening… release to send';
-  } catch { alert('Microphone not available, so please type instead.'); }
+  } catch { toast('Microphone not available, so please type your thoughts instead.'); $('deepText').focus(); }
 }
 function stopRec() { if (rec?.state === 'recording') { rec.stop(); $('recBtn').textContent = '🎙️ Hold to talk'; } }
 $('recBtn').onpointerdown = startRec; $('recBtn').onpointerup = stopRec; $('recBtn').onpointerleave = stopRec;
 
-$('kidNameLbl').textContent = 'champ';
+
 </script>
 </body>
 </html>
