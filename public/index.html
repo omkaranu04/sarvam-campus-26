@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff8ef; --card:#ffffff; --ink:#1d1a2f; --muted:#6b6880; --line:#eadfce;
+  --brand:#ff6b35; --brand2:#5b4bdb; --ok:#1f9d63; --bad:#e0475b; --soft:#fff1e6; --wa:#dcf8c6; --wabg:#ece5dd;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14121f; --card:#1f1c2e; --ink:#f3effa; --muted:#a6a1bd; --line:#2f2b44; --soft:#2a2238; --wa:#1f4d3a; --wabg:#101820;
+}}
+:root[data-theme="dark"]{ --bg:#14121f; --card:#1f1c2e; --ink:#f3effa; --muted:#a6a1bd; --line:#2f2b44; --soft:#2a2238; --wa:#1f4d3a; --wabg:#101820; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif}
+h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:#fff;font-size:22px}
+.logo h1{font-size:28px;line-height:1}
+.logo small{display:block;color:var(--muted);font-size:12px}
+select,input,textarea{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
+nav{display:flex;gap:6px;margin:16px 0;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:5px}
+nav button{flex:1;border:0;background:none;padding:10px;border-radius:10px;font:700 15px "Baloo 2",sans-serif;color:var(--muted);cursor:pointer}
+nav button.on{background:var(--brand);color:#fff}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px}
+.btn{border:0;border-radius:12px;padding:11px 16px;font:700 15px "Baloo 2",sans-serif;cursor:pointer;background:var(--brand);color:#fff}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn.alt{background:var(--brand2)}
+.btn:disabled{opacity:.55;cursor:wait}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--soft);color:var(--brand)}
+.progress{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin:10px 0 16px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .4s}
+.q{font-size:20px;font-weight:600;margin:10px 0 14px}
+.passage{background:var(--soft);border-left:4px solid var(--brand2);padding:10px 14px;border-radius:10px;margin:8px 0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 14px;font:600 16px Inter,sans-serif;cursor:pointer}
+.opt:hover{border-color:var(--brand)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--card))}
+.feedback{margin-top:14px;padding:12px 14px;border-radius:12px}
+.feedback.ok{background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.feedback.hint{background:color-mix(in srgb,var(--brand2) 14%,var(--card))}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--soft);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font:800 26px "Baloo 2",sans-serif}
+.stat span{font-size:12px;color:var(--muted)}
+.badges{display:flex;gap:10px;flex-wrap:wrap}
+.badge{background:var(--soft);border-radius:14px;padding:10px 12px;font-size:14px;display:flex;gap:8px;align-items:center}
+.badge.locked{opacity:.4;filter:grayscale(1)}
+.wa{background:var(--wabg);border-radius:16px;padding:16px}
+.bubble{background:var(--wa);border-radius:12px 12px 12px 2px;padding:10px 12px;max-width:520px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.bubble small{display:block;text-align:right;color:var(--muted);font-size:11px}
+.muted{color:var(--muted);font-size:14px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px}
+@keyframes s{to{transform:rotate(360deg)}}
+.timer{font:800 18px "Baloo 2",sans-serif;color:var(--brand2)}
+.tag-sarvam{font-size:11px;color:var(--muted)}
+.hidden{display:none}
+.big{font-size:44px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><div class="mark">🧠</div><div><h1>Mind Sprint</h1><small>Duolingo for Logic · made for Bharat · powered by Sarvam AI</small></div></div>
+    <div class="row">
+      <label class="muted" for="lang">Language</label>
+      <select id="lang"></select>
+    </div>
+  </header>
+
+  <nav>
+    <button data-tab="kid" class="on">🎯 Today's Sprint</button>
+    <button data-tab="parent">👪 Parent Digest</button>
+    <button data-tab="deep">💭 Deep Thought</button>
+  </nav>
+
+  <!-- KID -->
+  <section id="tab-kid">
+    <div class="card" id="intro">
+      <div class="row" style="justify-content:space-between">
+        <div><h2>Hi <span id="kidNameLbl">champ</span>! 👋</h2><div class="muted">4 puzzles · ~7 minutes · no streak pressure, every finished day earns a badge.</div></div>
+        <div class="row">
+          <select id="daySel" aria-label="Day"></select>
+          <button class="btn" id="startBtn">Start sprint ▶</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <input id="theme" placeholder="Theme for an AI sprint (e.g. space, cricket)" style="flex:1;min-width:200px">
+        <button class="btn alt" id="genBtn">✨ Generate fresh sprint</button>
+      </div>
+      <div class="tag-sarvam" style="margin-top:6px">Fresh sprints written by sarvam-105b · translated with Sarvam Translate · read aloud with Bulbul v3</div>
+    </div>
+
+    <div class="card hidden" id="play">
+      <div class="row" style="justify-content:space-between">
+        <span class="pill" id="typePill"></span>
+        <div class="row"><span class="timer" id="timer"></span><button class="btn ghost" id="speakBtn">🔊 Read aloud</button></div>
+      </div>
+      <div class="progress"><i id="bar" style="width:0"></i></div>
+      <h3 id="title"></h3>
+      <div class="passage hidden" id="passage"></div>
+      <div class="q" id="question"></div>
+      <div class="opts" id="opts"></div>
+      <div class="row hidden" id="numRow"><input id="numIn" inputmode="numeric" placeholder="Your answer" style="width:180px"><button class="btn" id="numBtn">Check</button></div>
+      <div id="fb"></div>
+      <div class="row" style="margin-top:14px;justify-content:space-between">
+        <button class="btn ghost hidden" id="hintBtn">💡 Give me a hint</button>
+        <button class="btn hidden" id="nextBtn">Next →</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="done">
+      <div class="big">🎉</div>
+      <h2>Sprint complete!</h2>
+      <p class="muted" id="doneMsg"></p>
+      <div class="badges" id="dayBadges"></div>
+      <div class="row" style="margin-top:14px"><button class="btn" id="againBtn">Back to start</button><button class="btn alt" id="toParent">Show my parent 👪</button></div>
+    </div>
+  </section>
+
+  <!-- PARENT -->
+  <section id="tab-parent" class="hidden">
+    <div class="card">
+      <h2>This week</h2>
+      <div class="stats" id="stats" style="margin-top:10px"></div>
+      <h3 style="margin-top:16px">Badges <span class="muted">(earned by completion, never lost)</span></h3>
+      <div class="badges" id="allBadges" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2>Weekly Session Digest</h2>
+        <div class="row">
+          <input id="kidName" placeholder="Child's name" value="Aarav" style="width:140px">
+          <button class="btn" id="digestBtn">Generate on WhatsApp 📲</button>
+        </div>
+      </div>
+      <p class="muted">Written by sarvam-105b in English, translated into your chosen language, then sent as a Bulbul voice note. It only reports facts like days done and points. It never makes "IQ +12%" claims or profiles your child, so it stays within DPDP Act §9(3).</p>
+      <div class="wa" id="waBox"><div class="muted">Your digest will appear here like a WhatsApp message.</div></div>
+    </div>
+  </section>
+
+  <!-- DEEP THOUGHT -->
+  <section id="tab-deep" class="hidden">
+    <div class="card">
+      <span class="pill">Ungraded · once a week · no points, just thinking</span>
+      <h2 style="margin-top:10px" id="deepQ"></h2>
+      <div class="row" style="margin-top:8px"><button class="btn ghost" id="deepSpeak">🔊 Read aloud</button><button class="btn ghost" id="deepNext">↻ Another question</button></div>
+      <p class="muted">Speak your answer in any Indian language. Sarvam's Saarika model understands it, and your thinking-buddy replies with a follow-up question.</p>
+      <div class="row">
+        <button class="btn" id="recBtn">🎙️ Hold to talk</button>
+        <span class="muted">or</span>
+        <input id="deepText" placeholder="type your thoughts…" style="flex:1;min-width:200px">
+        <button class="btn alt" id="deepSend">Share</button>
+      </div>
+      <div id="deepOut" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <p class="muted" style="text-align:center;margin-top:20px">Mind Sprint · IIT Kharagpur founders · Winter Mind Sprint pilot, Dec 2026</p>
+</div>
+
+<script>
+const LANGS = [['en-IN','English'],['hi-IN','हिन्दी Hindi'],['bn-IN','বাংলা Bengali'],['ta-IN','தமிழ் Tamil'],['te-IN','తెలుగు Telugu'],['kn-IN','ಕನ್ನಡ Kannada'],['ml-IN','മലയാളം Malayalam'],['mr-IN','मराठी Marathi'],['gu-IN','ગુજરાતી Gujarati'],['pa-IN','ਪੰਜਾਬੀ Punjabi'],['od-IN','ଓଡ଼ିଆ Odia']];
+const TYPES = { fast_math:'⚡ Fast Math', logic:'🧩 Logic & Matrix', riddle:'🕵️ Riddle', curiosity:'🔭 Curiosity' };
+const BADGES = [
+  ['first','🌱','First Sprint','Finish any sprint'],
+  ['hintfree','🦅','Solo Flyer','Solve a puzzle with no hint'],
+  ['comeback','🔁','Comeback Kid','Solve one after a wrong try'],
+  ['allfour','🏆','Clean Sweep','All 4 right in one sprint'],
+  ['three','🔥','Three Days','Finish 3 sprints (any days, no streak needed)'],
+  ['polyglot','🌏','Polyglot','Play in a language other than English'],
+  ['thinker','💭','Deep Thinker','Share a Deep Thought'],
+];
+const FALLBACK = {days:[{day:1,theme:'Warm-up',items:[
+  {type:'fast_math',title:'Mango Market',question:'A box has 12 mangoes. How many mangoes are in 7 boxes?',answer:'84',explanation:'12 × 7 = 84. Tip: 10×7 + 2×7 = 70 + 14.',points:10},
+  {type:'logic',title:'Number Train',question:'What comes next? 2, 6, 12, 20, 30, ?',options:['40','42','44','36'],answer:'42',explanation:'The gaps grow by 2: +4, +6, +8, +10, +12 → 42.',points:10},
+  {type:'riddle',title:'Who am I?',question:'I have keys but open no locks. I have space but no room. What am I?',options:['A piano','A keyboard','A map','A diary'],answer:'A keyboard',explanation:'A keyboard has keys and a space bar!',points:10},
+  {type:'curiosity',title:'Moon Mission',passage:'In 2023, ISRO\'s Chandrayaan-3 made India the first country to land near the Moon\'s south pole. Scientists think that region may hold water ice in craters that never see sunlight.',question:'Why is the Moon\'s south pole interesting to scientists?',options:['It is the hottest place','It may have water ice','It has volcanoes','It is made of gold'],answer:'It may have water ice',explanation:'Shadowed craters stay super cold, so ice can survive there.',points:10}]}],
+  deep_thoughts:['If you could keep only one memory forever, which would you choose — and why?','Is it ever okay to break a rule? When?']};
+
+const $ = id => document.getElementById(id);
+const S = (() => { try { return JSON.parse(localStorage.getItem('ms') || '{}'); } catch { return {}; } })();
+S.log ??= []; S.badges ??= [];
+const save = () => { try { localStorage.setItem('ms', JSON.stringify(S)); } catch {} };
+let BANK = FALLBACK, sprint = null, idx = 0, cur = null, tr = null, attempts = 0, hintsUsed = 0, results = [], timerId = null, deepIdx = 0;
+const lang = () => $('lang').value;
+
+async function api(path, body) {
+  const r = await fetch(path, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'Request failed');
+  return d;
+}
+function busy(btn, on, label) { if (on) { btn.dataset.l = btn.innerHTML; btn.innerHTML = `<span class="spin"></span> ${label||''}`; btn.disabled = true; } else { btn.innerHTML = btn.dataset.l; btn.disabled = false; } }
+function play(b64) { if (!b64) return; const a = new Audio('data:audio/wav;base64,' + b64); a.play(); return a; }
+function award(id) { if (!S.badges.includes(id)) { S.badges.push(id); save(); return true; } return false; }
+
+// ---------- setup ----------
+LANGS.forEach(([v,l]) => $('lang').add(new Option(l, v)));
+$('lang').value = S.lang || 'en-IN';
+$('lang').onchange = async () => { S.lang = lang(); save(); if (lang() !== 'en-IN') award('polyglot'); if (cur) { await localize(); render(); } renderDeep(); };
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+function showTab(t) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  ['kid','parent','deep'].forEach(x => $('tab-'+x).classList.toggle('hidden', x !== t));
+  if (t === 'parent') renderParent();
+}
+function fillDays() { $('daySel').innerHTML = ''; BANK.days.forEach((d,i) => $('daySel').add(new Option(`Day ${d.day} · ${d.theme}`, i))); }
+fetch('puzzles.json').then(r => r.ok ? r.json() : null).then(j => { if (j?.days?.length) BANK = j; fillDays(); renderDeep(); }).catch(() => { fillDays(); renderDeep(); });
+
+// ---------- sprint ----------
+$('startBtn').onclick = () => startSprint(BANK.days[+$('daySel').value]);
+$('genBtn').onclick = async () => {
+  busy($('genBtn'), true, 'sarvam-105b is writing your puzzles…');
+  try { const { day } = await api('/api/generate', { theme: $('theme').value || 'surprise me', age: 10 }); day.day = 'AI'; startSprint(day); }
+  catch (e) { alert('Could not generate right now (' + e.message + '). Using today\'s curated sprint.'); startSprint(BANK.days[0]); }
+  finally { busy($('genBtn'), false); }
+};
+async function startSprint(day) { sprint = day; idx = 0; results = []; $('intro').classList.add('hidden'); $('done').classList.add('hidden'); $('play').classList.remove('hidden'); await load(); }
+async function load() {
+  cur = sprint.items[idx]; attempts = 0; hintsUsed = 0;
+  $('bar').style.width = (idx / sprint.items.length * 100) + '%';
+  await localize(); render();
+}
+async function localize() {
+  const it = cur;
+  const src = [it.title, it.question, it.passage || '', it.explanation || '', ...(it.options || [])];
+  tr = { title: it.title, question: it.question, passage: it.passage, explanation: it.explanation, options: it.options };
+  if (lang() === 'en-IN') return;
+  $('question').innerHTML = '<span class="spin"></span> Translating with Sarvam…';
+  try {
+    const { texts } = await api('/api/translate', { texts: src, lang: lang() });
+    tr = { title: texts[0], question: texts[1], passage: texts[2], explanation: texts[3], options: it.options ? texts.slice(4) : null };
+  } catch {}
+}
+function render() {
+  const it = cur;
+  $('typePill').textContent = TYPES[it.type] || it.type;
+  $('title').textContent = tr.title;
+  $('passage').classList.toggle('hidden', !tr.passage); $('passage').textContent = tr.passage || '';
+  $('question').textContent = tr.question;
+  $('fb').innerHTML = ''; $('nextBtn').classList.add('hidden'); $('hintBtn').classList.add('hidden');
+  $('opts').innerHTML = '';
+  clearInterval(timerId); $('timer').textContent = '';
+  if (it.type === 'fast_math') {
+    $('numRow').classList.remove('hidden'); $('numIn').value = ''; $('numIn').focus();
+    let t = 0; timerId = setInterval(() => $('timer').textContent = `⏱ ${++t}s`, 1000);
+  } else {
+    $('numRow').classList.add('hidden');
+    it.options.forEach((o, i) => { const b = document.createElement('button'); b.className = 'opt'; b.textContent = tr.options?.[i] || o; b.onclick = () => check(o, b); $('opts').append(b); });
+  }
+}
+$('numBtn').onclick = () => check($('numIn').value.trim(), null);
+$('numIn').onkeydown = e => { if (e.key === 'Enter') $('numBtn').click(); };
+function norm(s) { return String(s).replace(/[,\s₹]/g, '').toLowerCase(); }
+function check(ans, btn) {
+  if (!$('nextBtn').classList.contains('hidden')) return;
+  const ok = norm(ans) === norm(cur.answer);
+  attempts++;
+  if (ok) {
+    clearInterval(timerId);
+    btn?.classList.add('right');
+    const pts = Math.max(4, (cur.points || 10) - (attempts - 1) * 2 - hintsUsed * 2);
+    results.push({ type: cur.type, ok: true, attempts, hints: hintsUsed, pts });
+    $('fb').innerHTML = `<div class="feedback ok"><b>✅ Brilliant! +${pts} points</b><br>${tr.explanation || ''}</div>`;
+    $('hintBtn').classList.add('hidden'); $('nextBtn').classList.remove('hidden');
+  } else {
+    btn?.classList.add('wrong');
+    $('fb').innerHTML = `<div class="feedback hint">Not quite — that's how brains grow! Try again${hintsUsed < 3 ? ', or ask for a hint.' : '.'}</div>`;
+    cur._wrong = ans;
+    if (hintsUsed < 3) $('hintBtn').classList.remove('hidden');
+    if (attempts >= 4) { results.push({ type: cur.type, ok: false, attempts, hints: hintsUsed, pts: 2 }); $('fb').innerHTML += `<div class="feedback ok">The answer was <b>${cur.answer}</b>. ${tr.explanation || ''} (+2 for sticking with it)</div>`; $('nextBtn').classList.remove('hidden'); $('hintBtn').classList.add('hidden'); clearInterval(timerId); }
+  }
+}
+$('hintBtn').onclick = async () => {
+  hintsUsed++; busy($('hintBtn'), true, 'thinking…');
+  try {
+    const { hint } = await api('/api/hint', { question: cur.question, options: cur.options, answer: cur.answer, wrong: cur._wrong, lang: lang(), level: hintsUsed });
+    $('fb').innerHTML = `<div class="feedback hint">💡 <b>Hint ${hintsUsed}/3:</b> ${hint}</div>`;
+  } catch (e) { $('fb').innerHTML = `<div class="feedback hint">💡 Break it into smaller steps — what do you know for sure?</div>`; }
+  busy($('hintBtn'), false); if (hintsUsed >= 3) $('hintBtn').classList.add('hidden');
+};
+$('speakBtn').onclick = async () => {
+  const txt = [tr.passage, tr.question, ...(tr.options || []).map((o,i) => `${'ABCD'[i]}: ${o}`)].filter(Boolean).join('. ');
+  busy($('speakBtn'), true, 'Bulbul…');
+  try { const { audio } = await api('/api/tts', { text: txt, lang: lang() }); play(audio); } catch (e) { alert('Voice unavailable: ' + e.message); }
+  busy($('speakBtn'), false);
+};
+$('nextBtn').onclick = () => { idx++; if (idx < sprint.items.length) load(); else finish(); };
+function finish() {
+  $('play').classList.add('hidden'); $('done').classList.remove('hidden'); $('bar').style.width = '100%';
+  const pts = results.reduce((a, r) => a + r.pts, 0), right = results.filter(r => r.ok).length;
+  S.log.push({ date: new Date().toISOString().slice(0,10), day: sprint.day, theme: sprint.theme, pts, right, total: results.length, hints: results.reduce((a,r)=>a+r.hints,0), comeback: results.some(r => r.ok && r.attempts > 1) });
+  const fresh = [];
+  if (award('first')) fresh.push('first');
+  if (results.some(r => r.ok && r.hints === 0 && r.attempts === 1) && award('hintfree')) fresh.push('hintfree');
+  if (results.some(r => r.ok && r.attempts > 1) && award('comeback')) fresh.push('comeback');
+  if (right === results.length && award('allfour')) fresh.push('allfour');
+  if (S.log.length >= 3 && award('three')) fresh.push('three');
+  save();
+  $('doneMsg').textContent = `${right}/${results.length} solved · ${pts} points today · ${S.log.length} sprint${S.log.length>1?'s':''} finished so far.`;
+  $('dayBadges').innerHTML = fresh.length ? fresh.map(badgeHTML).join('') : '<span class="muted">Every finished sprint counts. Come back tomorrow, or whenever you like. No streak to lose!</span>';
+}
+$('againBtn').onclick = () => { $('done').classList.add('hidden'); $('intro').classList.remove('hidden'); };
+$('toParent').onclick = () => showTab('parent');
+function badgeHTML(id) { const b = BADGES.find(x => x[0] === id); return `<div class="badge"><span style="font-size:22px">${b[1]}</span><div><b>${b[2]}</b><br><span class="muted">${b[3]}</span></div></div>`; }
+
+// ---------- parent ----------
+function weekStats() {
+  const days = new Set(S.log.map(l => l.date)).size;
+  const solved = S.log.reduce((a,l) => a + l.right, 0), pts = S.log.reduce((a,l) => a + l.pts, 0);
+  const best = S.log.slice().sort((a,b) => b.pts - a.pts)[0];
+  return { sprints_completed: S.log.length, active_days: days, puzzles_solved: solved, points: pts, badges: S.badges.map(id => BADGES.find(b => b[0]===id)?.[2]), highlight: best ? `Best sprint: "${best.theme}" with ${best.pts} points${best.comeback ? ', including a comeback after a wrong first try' : ''}` : 'Just getting started' };
+}
+function renderParent() {
+  const s = weekStats();
+  $('stats').innerHTML = [['Sprints', s.sprints_completed], ['Active days', s.active_days], ['Puzzles solved', s.puzzles_solved], ['Points', s.points]].map(([l,v]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  $('allBadges').innerHTML = BADGES.map(b => `<div class="badge ${S.badges.includes(b[0])?'':'locked'}"><span style="font-size:22px">${b[1]}</span><b>${b[2]}</b></div>`).join('');
+}
+$('digestBtn').onclick = async () => {
+  busy($('digestBtn'), true, 'Writing digest…');
+  const s = weekStats(); if (!s.sprints_completed) Object.assign(s, { sprints_completed: 4, active_days: 4, puzzles_solved: 13, points: 142, highlight: 'Cracked a tricky number-pattern puzzle after two tries' , note: 'demo data' });
+  try {
+    const d = await api('/api/digest', { child: $('kidName').value || 'Your child', stats: s, lang: lang() === 'en-IN' ? 'hi-IN' : lang() });
+    const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+    $('waBox').innerHTML = `<div class="muted" style="margin-bottom:8px">Mind Sprint · Weekly Session Digest</div>
+      <div class="bubble">${escapeHTML(d.text)}<small>${time} ✓✓</small></div>
+      ${d.audio ? `<div class="bubble" style="margin-top:8px">🎙️ Voice note (Bulbul)<br><audio controls src="data:audio/wav;base64,${d.audio}" style="width:100%;margin-top:6px"></audio><small>${time} ✓✓</small></div>` : ''}
+      <details style="margin-top:8px"><summary class="muted">English original</summary><p class="muted">${escapeHTML(d.en)}</p></details>
+      <div class="muted" style="margin-top:8px">Reply <b>STOP</b> to pause · <b>START</b> to resume</div>`;
+  } catch (e) { $('waBox').innerHTML = `<div class="muted">Couldn't reach Sarvam: ${escapeHTML(e.message)}</div>`; }
+  busy($('digestBtn'), false);
+};
+function escapeHTML(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// ---------- deep thought ----------
+async function renderDeep() {
+  const q = BANK.deep_thoughts?.[deepIdx % BANK.deep_thoughts.length] || FALLBACK.deep_thoughts[0];
+  $('deepQ').textContent = q; $('deepQ').dataset.en = q;
+  if (lang() !== 'en-IN') { try { const { texts } = await api('/api/translate', { texts: [q], lang: lang() }); $('deepQ').textContent = texts[0]; } catch {} }
+}
+$('deepNext').onclick = () => { deepIdx++; renderDeep(); };
+$('deepSpeak').onclick = async () => { busy($('deepSpeak'), true); try { const { audio } = await api('/api/tts', { text: $('deepQ').textContent, lang: lang() }); play(audio); } catch {} busy($('deepSpeak'), false); };
+async function reflect(body) {
+  $('deepOut').innerHTML = '<span class="spin"></span> Listening to your idea…';
+  try {
+    const d = await api('/api/reflect', { prompt: $('deepQ').dataset.en, lang: lang(), ...body });
+    award('thinker');
+    $('deepOut').innerHTML = `${d.transcript ? `<div class="passage">🗣️ “${escapeHTML(d.transcript)}”</div>` : ''}<div class="feedback hint">💭 ${escapeHTML(d.reply)}</div>`;
+  } catch (e) { $('deepOut').innerHTML = `<div class="muted">Couldn't reach your thinking-buddy: ${escapeHTML(e.message)}</div>`; }
+}
+$('deepSend').onclick = () => { const t = $('deepText').value.trim(); if (t) reflect({ text: t }); };
+let rec, chunks = [];
+async function startRec() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    rec = new MediaRecorder(stream); chunks = [];
+    rec.ondataavailable = e => chunks.push(e.data);
+    rec.onstop = async () => { stream.getTracks().forEach(t => t.stop()); const blob = new Blob(chunks, { type: 'audio/webm' }); const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(blob); }); reflect({ audio: b64 }); };
+    rec.start(); $('recBtn').textContent = '🔴 Listening… release to send';
+  } catch { alert('Microphone not available, so please type instead.'); }
+}
+function stopRec() { if (rec?.state === 'recording') { rec.stop(); $('recBtn').textContent = '🎙️ Hold to talk'; } }
+$('recBtn').onpointerdown = startRec; $('recBtn').onpointerup = stopRec; $('recBtn').onpointerleave = stopRec;
+
+$('kidNameLbl').textContent = 'champ';
+</script>
+</body>
+</html>

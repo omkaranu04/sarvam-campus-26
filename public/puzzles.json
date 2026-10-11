@@ -1,0 +1,246 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "theme": "Cricket Day",
+      "items": [
+        {
+          "type": "fast_math",
+          "title": "Boundary Blast",
+          "question": "Smriti hits 4 fours and 3 sixes in her innings. How many runs did she score from these boundaries?",
+          "answer": "34",
+          "explanation": "4 fours = 4 x 4 = 16 runs, and 3 sixes = 3 x 6 = 18 runs. 16 + 18 = 34!",
+          "points": 10
+        },
+        {
+          "type": "logic",
+          "title": "Scoreboard Pattern",
+          "question": "The scoreboard shows a secret pattern: 2, 6, 12, 20, 30, ?  What comes next?",
+          "options": ["36", "40", "42", "44"],
+          "answer": "42",
+          "explanation": "The gaps grow by 2 each time: +4, +6, +8, +10, so next is +12. 30 + 12 = 42!",
+          "points": 10
+        },
+        {
+          "type": "riddle",
+          "title": "Hands Up",
+          "question": "I have two hands but I can never clap. I have a face but I can never smile. What am I?",
+          "options": ["A clock", "A river", "A book", "A shoe"],
+          "answer": "A clock",
+          "explanation": "A clock has an hour hand and a minute hand, and its front is called a face!",
+          "points": 10
+        },
+        {
+          "type": "curiosity",
+          "title": "Why Does the Ball Swing?",
+          "passage": "Fast bowlers rub one side of the cricket ball on their trousers to keep it shiny. Air slides smoothly over the shiny side but gets bumpy and messy on the rough side. This difference pushes the ball sideways in the air, and that curve is called swing!",
+          "question": "Why do bowlers keep one side of the ball shiny?",
+          "options": [
+            "So air flows differently on each side and the ball swings",
+            "So the ball looks nice on TV",
+            "So the ball becomes heavier",
+            "So the batter cannot see the ball"
+          ],
+          "answer": "So air flows differently on each side and the ball swings",
+          "explanation": "The shiny side and rough side make air flow differently, which pushes the ball sideways.",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "theme": "Monsoon Express",
+      "items": [
+        {
+          "type": "fast_math",
+          "title": "Seats on the Express",
+          "question": "A train has 12 coaches and each coach has 72 seats. How many seats does the whole train have?",
+          "answer": "864",
+          "explanation": "12 x 72 = 864. A quick trick: 10 x 72 = 720, and 2 x 72 = 144, so 720 + 144 = 864!",
+          "points": 10
+        },
+        {
+          "type": "logic",
+          "title": "Who Has the Banana?",
+          "question": "Asha, Bilal and Chitra each have one different fruit: a mango, a banana or a guava. Asha does not have the banana or the guava. Bilal does not have the banana. Who has the banana?",
+          "options": ["Asha", "Bilal", "Chitra", "Nobody"],
+          "answer": "Chitra",
+          "explanation": "Asha must have the mango. Bilal can't have the banana, so he has the guava. That leaves the banana for Chitra!",
+          "points": 10
+        },
+        {
+          "type": "riddle",
+          "title": "Rainy Walk",
+          "question": "The more of me you take, the more of me you leave behind. What am I?",
+          "options": ["Footsteps", "Umbrellas", "Raindrops", "Money"],
+          "answer": "Footsteps",
+          "explanation": "Every step you take leaves a footprint behind you, especially on a muddy monsoon road!",
+          "points": 10
+        },
+        {
+          "type": "curiosity",
+          "title": "Where Does the Monsoon Come From?",
+          "passage": "In summer, the land in India heats up much faster than the ocean. Hot air over the land rises up, and cool, wet wind from the Indian Ocean rushes in to take its place. That wet wind carries clouds full of water, and that is the monsoon!",
+          "question": "What brings monsoon rain to India?",
+          "options": [
+            "Wet winds blowing in from the ocean",
+            "Snow melting on the Himalayas",
+            "Water rising from rivers at night",
+            "Clouds made by trains and cars"
+          ],
+          "answer": "Wet winds blowing in from the ocean",
+          "explanation": "Hot land pulls in wet ocean wind, and that wind drops its water as monsoon rain.",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "theme": "ISRO Space Mission",
+      "items": [
+        {
+          "type": "fast_math",
+          "title": "Rocket Fuel",
+          "question": "A rocket engine burns 25 kg of fuel every second. How many kg of fuel does it burn in 1 minute?",
+          "answer": "1500",
+          "explanation": "1 minute = 60 seconds, and 25 x 60 = 1500 kg. That's a hungry rocket!",
+          "points": 10
+        },
+        {
+          "type": "logic",
+          "title": "Mission Control Grid",
+          "question": "Each row of this grid follows the same rule.  Row 1: 3, 5, 8.  Row 2: 4, 6, 10.  Row 3: 7, 2, ?  What is the missing number?",
+          "options": ["5", "9", "11", "14"],
+          "answer": "9",
+          "explanation": "In every row, the first number plus the second number gives the third. 7 + 2 = 9!",
+          "points": 10
+        },
+        {
+          "type": "riddle",
+          "title": "Never Arrives",
+          "question": "I am always coming, but I never arrive. When you think you've reached me, I've moved one day ahead. What am I?",
+          "options": ["Tomorrow", "A train", "The Moon", "Your birthday"],
+          "answer": "Tomorrow",
+          "explanation": "When tomorrow comes, it becomes today, and there's a new tomorrow waiting!",
+          "points": 10
+        },
+        {
+          "type": "curiosity",
+          "title": "Chandrayaan-3",
+          "passage": "In August 2023, ISRO's Chandrayaan-3 mission landed its Vikram lander near the south pole of the Moon. No country had ever landed there before! Scientists are curious about this area because some of its craters may hold frozen water.",
+          "question": "What was special about where Chandrayaan-3 landed?",
+          "options": [
+            "It was the first landing near the Moon's south pole",
+            "It landed on the Sun",
+            "It was the first landing on Mars",
+            "It landed in the middle of the ocean"
+          ],
+          "answer": "It was the first landing near the Moon's south pole",
+          "explanation": "India became the first country ever to land near the Moon's south pole, where there may be frozen water.",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "theme": "Mango Market",
+      "items": [
+        {
+          "type": "fast_math",
+          "title": "Change from the Fruit Stall",
+          "question": "Mangoes cost Rs 15 each. You buy 6 mangoes and pay with a Rs 100 note. How many rupees do you get back?",
+          "answer": "10",
+          "explanation": "6 mangoes x Rs 15 = Rs 90. Then Rs 100 - Rs 90 = Rs 10 change!",
+          "points": 10
+        },
+        {
+          "type": "logic",
+          "title": "Letter Jumps",
+          "question": "What letter comes next?  A, C, F, J, O, ?",
+          "options": ["S", "T", "U", "V"],
+          "answer": "U",
+          "explanation": "The jumps grow by one each time: skip 2, 3, 4, 5, then 6. Six letters after O is U!",
+          "points": 10
+        },
+        {
+          "type": "riddle",
+          "title": "Keys Without Locks",
+          "question": "I have lots of keys, but I can't open a single lock. What am I?",
+          "options": ["A piano", "A door", "A cupboard", "A bicycle"],
+          "answer": "A piano",
+          "explanation": "A piano has black and white keys that make music, not keys that open locks!",
+          "points": 10
+        },
+        {
+          "type": "curiosity",
+          "title": "The Newspaper Trick",
+          "passage": "Ripe fruits give off an invisible gas called ethylene, which tells fruits to ripen. When grandparents wrap raw mangoes in newspaper or keep them in a box of rice, the gas stays trapped around the fruit. More gas means the mangoes ripen faster!",
+          "question": "Why do mangoes ripen faster when wrapped in newspaper?",
+          "options": [
+            "The ripening gas ethylene gets trapped around them",
+            "The newspaper ink adds sugar to them",
+            "The newspaper keeps them very cold",
+            "The mangoes read the news and get excited"
+          ],
+          "answer": "The ripening gas ethylene gets trapped around them",
+          "explanation": "Newspaper holds the ethylene gas close to the mangoes, so they ripen sooner.",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "theme": "Diwali Lights",
+      "items": [
+        {
+          "type": "fast_math",
+          "title": "Diya Rows",
+          "question": "Meera arranges diyas in 8 rows with 9 diyas in each row. The wind blows out 5 diyas. How many diyas are still lit?",
+          "answer": "67",
+          "explanation": "8 x 9 = 72 diyas in total. 72 - 5 = 67 diyas still glowing!",
+          "points": 10
+        },
+        {
+          "type": "logic",
+          "title": "Bloops and Lazzies",
+          "question": "All Bloops are Razzies. All Razzies are Lazzies. So, all Bloops are definitely...?",
+          "options": ["Lazzies", "Not Razzies", "Bigger than Lazzies", "We cannot tell"],
+          "answer": "Lazzies",
+          "explanation": "Bloops are inside the Razzies group, and Razzies are inside the Lazzies group, so Bloops must be Lazzies too!",
+          "points": 10
+        },
+        {
+          "type": "riddle",
+          "title": "After the Bath",
+          "question": "What gets wetter and wetter the more it dries?",
+          "options": ["A towel", "A sponge cake", "The Sun", "A rangoli"],
+          "answer": "A towel",
+          "explanation": "A towel dries you by soaking up the water, so it gets wetter as it works!",
+          "points": 10
+        },
+        {
+          "type": "curiosity",
+          "title": "Colours in the Sky",
+          "passage": "Fireworks get their bright colours from tiny bits of different metals. When heated, each metal glows its own colour: strontium glows red, copper glows blue and sodium glows yellow. Chemists mix them carefully to paint the sky!",
+          "question": "What gives fireworks their different colours?",
+          "options": [
+            "Different metals glowing when heated",
+            "Coloured paper inside them",
+            "The colour of the night sky",
+            "Paint sprayed on the clouds"
+          ],
+          "answer": "Different metals glowing when heated",
+          "explanation": "Each metal glows a special colour when it gets very hot, like copper glowing blue.",
+          "points": 10
+        }
+      ]
+    }
+  ],
+  "deep_thoughts": [
+    "If a robot could feel sad, should we still be allowed to switch it off? Why or why not?",
+    "Is it ever okay to tell a lie to make a friend feel happy?",
+    "If you lost all your memories, would you still be the same person?",
+    "What makes something fair? Is fair always the same as equal?",
+    "If nobody ever saw you do a kind thing, would it still count? Why?"
+  ]
+}
